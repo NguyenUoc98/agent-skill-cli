@@ -1,0 +1,14 @@
+{
+  "name": "@uocnv/agent-installer",
+  "version": "1.0.0",
+  "description": "CLI tool to scaffold Agent Skills, Rules, and Workflows",
+  "main": "bin/index.js",
+  "bin": {
+    "agent-install": "bin/index.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}
