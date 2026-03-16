@@ -26,50 +26,67 @@ try {
         fs.cpSync(templateDir, targetDir, { recursive: true, force: true });
         console.log("✅ Successfully applied all base Rules, Skills, and Workflows to the project!");
     } else {
-        // Check if the base Role exists
-        const srcRoleDir = path.join(templateDir, 'skills', role);
-        if (!fs.existsSync(srcRoleDir)) {
-            console.error(`⚠️ Could not find Base Skill for role: ${role}`);
+        // Check if the base Role exists in skills (as a primary check)
+        const roleSkillsDir = path.join(templateDir, 'skills', role);
+        if (!fs.existsSync(roleSkillsDir)) {
+            console.error(`⚠️ Could not find base skills for role: ${role}`);
             console.error("Supported roles: po_ba, designer, dev, tester, all");
             process.exit(1);
         }
 
-        // Create target folder if it doesn't exist
-        const destRoleDir = path.join(targetDir, 'skills', role);
-        fs.mkdirSync(destRoleDir, { recursive: true });
+        // Helper function to apply role-specific content
+        const applyRoleContent = (subDir) => {
+            const srcDir = path.join(templateDir, subDir);
+            const destDir = path.join(targetDir, subDir);
 
-        // Copy skills
-        fs.cpSync(srcRoleDir, destRoleDir, { recursive: true, force: true });
+            if (!fs.existsSync(srcDir)) return;
 
-        // Copy workflows (Selective by role)
-        const srcWorkflowsDir = path.join(templateDir, 'workflows');
-        const destWorkflowsDir = path.join(targetDir, 'workflows');
-        const roleWorkflowFile = `${role}-workflow.md`;
-        const srcWorkflowPath = path.join(srcWorkflowsDir, roleWorkflowFile);
-
-        if (fs.existsSync(srcWorkflowPath)) {
-            if (!fs.existsSync(destWorkflowsDir)) {
-                fs.mkdirSync(destWorkflowsDir, { recursive: true });
+            if (!fs.existsSync(destDir)) {
+                fs.mkdirSync(destDir, { recursive: true });
             }
-            fs.copyFileSync(srcWorkflowPath, path.join(destWorkflowsDir, roleWorkflowFile));
-            console.log(`✅ Installed custom workflow for role: ${roleWorkflowFile}`);
+
+            const items = fs.readdirSync(srcDir, { withFileTypes: true });
+            for (const item of items) {
+                const srcPath = path.join(srcDir, item.name);
+                const destPath = path.join(destDir, item.name);
+
+                // Copy files at the same level as role folders
+                if (item.isFile()) {
+                    if (item.name.startsWith('.')) continue; // Skip hidden files
+                    
+                    fs.copyFileSync(srcPath, destPath);
+                    console.log(`✅ Installed file: .agent/${subDir}/${item.name}`);
+                } 
+                // Copy role-specific folder contents (Flattened)
+                else if (item.isDirectory() && item.name === role) {
+                    fs.cpSync(srcPath, destDir, { recursive: true, force: true });
+                    console.log(`✅ Installed contents of role folder: .agent/${subDir}/${role}`);
+                }
+            }
+        };
+
+        // 1. Copy files at the root of .agent templates
+        if (!fs.existsSync(targetDir)) {
+            fs.mkdirSync(targetDir, { recursive: true });
+        }
+        
+        const rootItems = fs.readdirSync(templateDir, { withFileTypes: true });
+        for (const item of rootItems) {
+            if (item.isFile()) {
+                if (item.name.startsWith('.')) continue; // Skip hidden files
+
+                fs.copyFileSync(path.join(templateDir, item.name), path.join(targetDir, item.name));
+                console.log(`✅ Installed root file: .agent/${item.name}`);
+            }
         }
 
-        // Copy rules (Local)
-        const srcRulesDir = path.join(templateDir, 'rules');
-        const destRulesDir = path.join(targetDir, 'rules');
-        const ruleFile = `${role}-base.md`;
-        const srcRulePath = path.join(srcRulesDir, ruleFile);
-
-        if (fs.existsSync(srcRulesDir)) {
-            if (!fs.existsSync(destRulesDir)) {
-                fs.mkdirSync(destRulesDir, { recursive: true });
-            }
-            fs.copyFileSync(srcRulePath, path.join(destRulesDir, ruleFile));
-            console.log(`✅ Installed custom rule for role: ${ruleFile}`);
+        // 2. Process predefined folders
+        const subfolders = ['agents', 'rules', 'skills', 'workflows'];
+        for (const folder of subfolders) {
+            applyRoleContent(folder);
         }
 
-        console.log(`✅ Successfully installed [${role}] role in the project.`);
+        console.log(`\n✅ Successfully installed [${role}] role in the project.`);
         console.log(`You can check and adjust features in .agent/ directory.`);
     }
 } catch (error) {

@@ -4,7 +4,7 @@ description: Feature development execution workflow for the Developer role, adhe
 
 # Technical Expert Execution Workflow (Dev Workflow)
 
-Whenever receiving a Task (User Story/New Feature) or when called via the `/dev-workflow` command, you **MUST** perform exactly these 4 professional steps before handoff. No skipping steps.
+Whenever receiving a Task (User Story/New Feature) or when called via the `/enhance` command, you **MUST** perform exactly these 4 professional steps before handoff. No skipping steps.
 
 ---
 
