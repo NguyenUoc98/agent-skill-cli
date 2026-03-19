@@ -5,13 +5,27 @@ const path = require('path');
 const os = require('os');
 const { execSync } = require('child_process');
 
+// ANSI Color constants for professional CLI UI
+const colors = {
+    green: '\x1b[32m',
+    cyan: '\x1b[36m',
+    red: '\x1b[31m',
+    dim: '\x1b[90m',
+    reset: '\x1b[0m',
+    check: '\x1b[32m✔\x1b[0m',
+    cross: '\x1b[31m✖\x1b[0m',
+    info: '\x1b[36mℹ\x1b[0m',
+    pipe: '\x1b[90m│\x1b[0m'
+};
+
 // Role argument parsing
 const args = process.argv.slice(2);
 const roleArg = args.find(arg => arg.startsWith('--role='));
 
 if (!roleArg) {
-    console.error("❌ Please provide a role. Example: npx @uocnv/agent-installer --role=po_ba");
-    console.error("Supported roles: frontend, backend, po_ba, designer, tester");
+    console.error(`\n${colors.cross} Please provide a role.`);
+    console.error(`  ${colors.dim}Example: npx agent-skills-cli --role=po_ba${colors.reset}`);
+    console.error(`  ${colors.info} Supported roles: frontend, backend, po_ba, designer, tester\n`);
     process.exit(1);
 }
 
@@ -20,7 +34,7 @@ const currentDir = process.cwd();
 const templateDir = path.join(__dirname, '..', 'templates', '.agent');
 const targetDir = path.join(currentDir, '.agent');
 
-console.log(`🚀 Initializing environment for role: ${role}...`);
+console.log(`\n${colors.check} Initializing environment for role: ${colors.cyan}${role}${colors.reset}`);
 
 try {
     let rolesToInstall = [];
@@ -29,50 +43,46 @@ try {
     } else if (role === 'backend') {
         rolesToInstall = ['dev/common', 'dev/backend'];
     } else if (role === 'dev') {
-        console.error("❌ Role 'dev' is no longer supported. Please use '--role=frontend' or '--role=backend'.");
+        console.error(`\n${colors.cross} Role 'dev' is no longer supported. Please use '--role=frontend' or '--role=backend'.`);
         process.exit(1);
     } else if (role === 'all') {
-        console.error("❌ Role 'all' is no longer supported. Please install specific roles sequentially.");
+        console.error(`\n${colors.cross} Role 'all' is no longer supported. Please install specific roles sequentially.`);
         process.exit(1);
     } else {
         rolesToInstall = [role];
     }
-
-
 
     // 1. Create target structure
     if (!fs.existsSync(targetDir)) {
         fs.mkdirSync(targetDir, { recursive: true });
     }
 
-    const subfolders = ['agents', 'rules', 'skills', 'workflow'];
+    const subfolders = ['agents', 'rules', 'skills', 'workflows'];
     subfolders.forEach(sub => {
         const dest = path.join(targetDir, sub);
         if (!fs.existsSync(dest)) fs.mkdirSync(dest, { recursive: true });
     });
 
-    // 2. [DELETED] Global ARCHITECTURE.md installation removed as per user request.
-
-    // 3. Install Common (Global) components
+    // 2. Install Common (Global) components
     const commonDir = path.join(templateDir, 'common');
     if (fs.existsSync(commonDir)) {
-        ['rules', 'workflow'].forEach(sub => {
+        ['rules', 'workflows'].forEach(sub => {
             const src = path.join(commonDir, sub);
             const dest = path.join(targetDir, sub);
             if (fs.existsSync(src)) {
                 fs.cpSync(src, dest, { recursive: true, force: true });
             }
         });
-        console.log("✅ Installed global common rules and workflows");
+        console.log(`${colors.pipe} Installed global common rules and workflows`);
     }
 
-    // 4. Install Role-specific components (Flattened)
+    // 3. Install Role-specific components (Flattened)
     rolesToInstall.forEach(r => {
         const roleSourceDir = path.join(templateDir, r);
         if (!fs.existsSync(roleSourceDir)) {
             if (!r.includes('/')) {
-                console.error(`⚠️ Could not find folder for role: ${r}`);
-                console.error("Supported roles: frontend, backend, po_ba, designer, tester");
+                console.error(`\n${colors.cross} Could not find folder for role: ${r}`);
+                console.error(`${colors.pipe} Supported roles: frontend, backend, po_ba, designer, tester`);
                 process.exit(1);
             }
             return;
@@ -82,7 +92,7 @@ try {
         const roleArch = path.join(roleSourceDir, 'ARCHITECTURE.md');
         if (fs.existsSync(roleArch)) {
             fs.copyFileSync(roleArch, path.join(targetDir, 'ARCHITECTURE.md'));
-            console.log(`✅ Installed role-specific ARCHITECTURE.md from: ${r}`);
+            console.log(`${colors.pipe} Installed architecture spec for ${colors.cyan}${r}${colors.reset}`);
         }
 
         // Install common subfolders
@@ -91,33 +101,47 @@ try {
             const dest = path.join(targetDir, sub);
             if (fs.existsSync(src)) {
                 fs.cpSync(src, dest, { recursive: true, force: true });
-                console.log(`✅ Installed components from: ${r}/${sub}`);
             }
         });
+        console.log(`${colors.pipe} Installed agents, rules, skills, workflows for ${colors.cyan}${r}${colors.reset}`);
     });
 
-
-    console.log(`\n✅ Successfully installed [${role}] in the project.`);
-    console.log(`Structure: .agent/ {ARCHITECTURE.md, agents, rules, skills, workflow}`);
-
-    // 5. Setup OpenSpec for Dev Roles
+    // 4. Setup OpenSpec for Dev Roles
     if (role === 'frontend' || role === 'backend') {
-        console.log(`\n⚙️  Setting up Official OpenSpec framework for Dev Role...`);
-        console.log(`(This may take a moment to download & initialize)`);
-        
+        console.log(`${colors.pipe} Installing OpenSpec framework globally...`);
         try {
-            execSync('npx -y @fission-ai/openspec@latest init', { stdio: 'inherit', cwd: currentDir });
-            execSync('npx -y @fission-ai/openspec@latest update', { stdio: 'inherit', cwd: currentDir });
-            console.log("✅ Successfully initialized OpenSpec!");
+            // Install globally via npm
+            execSync('npm install -g @fission-ai/openspec@latest', { stdio: 'inherit' });
+
+            console.log(`\n\n${colors.pipe} Initializing OpenSpec for the project...`);
+            // Run native OpenSpec commands without npx wrapper
+            execSync('openspec init', { stdio: 'inherit', cwd: currentDir });
+
+            // Automatically configure OpenSpec to generate artifacts in Vietnamese
+            const openspecConfigPath = path.join(currentDir, 'openspec', 'config.yaml');
+            if (fs.existsSync(openspecConfigPath)) {
+                let configData = fs.readFileSync(openspecConfigPath, 'utf8');
+                if (!configData.includes('Language: Vietnamese')) {
+                    // Match 'context: |' or '# context: |'
+                    configData = configData.replace(/^#?\s*context:\s*\|/m, "context: |\n  Language: Vietnamese\n  All artifacts must be written in Vietnamese. Keep technical terms in English.\n");
+                    fs.writeFileSync(openspecConfigPath, configData, 'utf8');
+                    console.log(`${colors.pipe} Configured OpenSpec output language to Vietnamese`);
+                }
+            }
+
+            execSync('openspec update', { stdio: 'inherit', cwd: currentDir });
+            console.log(`${colors.pipe} OpenSpec structure created`);
         } catch (specError) {
-            console.error("⚠️ Automatically installing OpenSpec failed. Please run manually:");
-            console.error("npx @fission-ai/openspec init && npx @fission-ai/openspec update");
+            console.error(`\n${colors.cross} OpenSpec setup failed. You may need 'sudo' permissions on Mac/Linux.`);
+            console.error(`${colors.pipe} Run manually: sudo npm install -g @fission-ai/openspec@latest`);
+            console.error(`${colors.pipe} Then run: openspec init && openspec update`);
         }
     }
 
+    console.log(`${colors.check} Setup complete for ${colors.cyan}${role}${colors.reset}`);
+    // console.log(`${colors.pipe} Structure: .agent/ {ARCHITECTURE.md, agents, rules, skills, workflows}\n`);
+
 } catch (error) {
-    console.error("❌ An error occurred during installation:", error.message);
+    console.error(`\n${colors.cross} An error occurred during installation:`, error.message);
     process.exit(1);
 }
-
-

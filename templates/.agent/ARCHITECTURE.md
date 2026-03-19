@@ -9,7 +9,7 @@ The `.agent` directory is organized by **role**, with each role having its own s
 ```text
 .agent/
 ├── common/             # Global components
-│   └── workflow/
+│   └── workflows/
 ├── dev/                # Developer roles
 │   ├── common/         # Shared Dev rules/skills
 │   ├── frontend/       # Frontend specialized content
