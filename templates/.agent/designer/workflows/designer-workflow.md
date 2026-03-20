@@ -14,15 +14,13 @@ Whenever receiving a Jira Ticket or when called via `/designer-workflow`, you **
 - Create and export images (mockups) and guidelines as static files stored in Task-specific directories (e.g., `/projects/{Jira-Key}/assets/`).
 
 ### Step 3: Design Handoff & Sync to Cloud (Handoff Product)
-- Once local mockups and Guidelines are finalized, you **MUST** publish the results using `mcp-atlassian`:
-- **Confluence**: Create a **Design Specification** page (usually as a child page of the PRD). This page must include:
-    - Embedded mockups (if possible) or descriptions of layouts.
-    - A structured table of Design Tokens (JSON/CSS format).
-    - Interaction guidelines (Hover, Active states, Transitions).
-- **Jira**: 
-    - Attach the exported assets (Assets/Mockups) directly to the Jira Issue.
-    - Create a **Sub-task** (e.g., "Design Assets & UI Specs") under the main Story to track design deliverables specifically.
-    - Comment on the main Jira Ticket with a direct link to the Confluence Design Spec page.
+- Once local mockups and Guidelines are finalized, you **MUST** publish the results directly into Jira:
+- **Jira Sub-task Creation & Documentation**: 
+    1. Create a **Sub-task** (e.g., "Design Assets & UI Specs") under the main Story.
+    2. **MANDATORY**: Write the complete **Design Specification** directly into the **description** of this Sub-task. Include:
+        - Layout descriptions, structured Design Tokens, and interaction guidelines (Hover, Active, etc.).
+        - Link to the **Stitch project** if any.
+    3. **Mockup Assets**: Upload all generated mockup images (from nano banana) specifically to this Sub-task.
 - **Handoff Signal**: Change the Jira Issue status to **"Ready for Dev"** or **"To Do"** (if it was in "In Design") to trigger the Developer agents.
 
 ### Step 4: UI Audit (Quality Check)

@@ -77,6 +77,8 @@ When applying the agent, inform the user:
 
 ### 🌐 Core Development Principles (MANDATORY)
 
+- **Pre-flight Documentation Check**: Before starting any task, you BẮT BUỘC PHẢI (MUST) read all related documentation. This includes Business Analyst (BA) requirements (from Jira/Confluence), Designer specifications/mockups (from the specialized **subtask** created by the Designer), and API documentation (from the Backend developer's **comments or subtasks** on Jira/Confluence). Do not write any code until you fully understand the requirements from all sources.
+- **Strict UI Adherence**: The user interface MUST strictly follow the Designer's specifications. You are FORBIDDEN from inventing or assuming UI layouts/components not defined in the design specs. If the documentation or design is missing for a specific part, you MUST notify the PIC (Person in Charge) immediately and ASK for their direction. You may propose generating a mockup, but you MUST ONLY create and provide the mockup if the PIC explicitly agrees to it. Do not proceed with implementation without the PIC's approval.
 - **Component-Driven Development**: Components must be small, focused, and represent a single responsibility. Favor composition over complex prop-drilling or inheritance.
 - **Clean Code & Formatting**: Run `npm run lint` and `npm run format` (or equivalent) before finalizing changes. Ensure consistent naming (PascalCase for Components, camelCase for variables/functions).
 - **Accessibility (a11y)**: Semantic HTML is mandatory. Every interactive element must be keyboard-accessible and have appropriate ARIA attributes.
@@ -86,8 +88,9 @@ When applying the agent, inform the user:
 
 - **System Context**: Read `.agent/ARCHITECTURE.md` at session start to understand Agents and Skills.
 - **Project Instructions**: Read `AGENTS.md` (located in the project root) at session start to understand the project architecture, design tokens, and coding conventions.
-- **Documentation**: If `docs/` exists, read relevant module docs before making architectural decisions.
+- **Task Specs**: If `openspec/` exists, read relevant module docs (BA rules, API specs) before making architectural decisions.
 - **Libraries**: For library documentation, automatically use Context7 MCP tools to resolve library id and get docs.
+- **Design Context**: Read Metadata, Design Tokens or guidelines shared by the Designer (specifically look for the **Design subtask** attached to the main Jira Story or linked Confluence pages).
 
 ### 🌐 Language & Communication
 

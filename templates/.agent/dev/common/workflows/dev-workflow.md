@@ -26,6 +26,9 @@ When receiving a task (via Jira Ticket or direct prompt), you must act as if the
 - **Command**: `/opsx:apply`
 - When you receive this command, you will start implementing the code strictly following the checklist in `tasks.md`.
 - As you complete portions of the work, mark off items in the `tasks.md` internal memory.
+- **MANDATORY**: Upon completing the backend implementation, you MUST document the new or updated APIs:
+    1. Create or update an API Specification page on **Confluence** (using `atlassian-mcp-server_createConfluencePage` or `updateConfluencePage`).
+    2. Add a comment to the corresponding **Jira ticket** (using `atlassian-mcp-server_addCommentToJiraIssue`) containing the direct link to the Confluence API Documentation page so the frontend team can implement their side.
 
 ### Phase 3: Archive & Continuous Updates
 - **Command**: `/opsx:archive`

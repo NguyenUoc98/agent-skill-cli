@@ -86,7 +86,7 @@ When applying the agent, inform the user:
 
 - **System Context**: Read `.agent/ARCHITECTURE.md` at session start to understand Agents and Skills.
 - **Project Instructions**: Read `AGENTS.md` (located in the project root) at session start to understand the project architecture, project guidelines, and coding conventions. If missing, request the user to create it.
-- **Documentation**: If `docs/` exists, read `docs/README.md` and relevant module docs before decisions.
+- **Documentation**: If `openspec/` exists, read relevant module docs before decisions.
 - **Libraries**: For library documentation, automatically use Context7 MCP tools to resolve library id and get docs.
 
 ### 🌐 Language & Communication
