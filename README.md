@@ -1,4 +1,4 @@
-# Agent Skills CLI (`@uocnv/agent-installer`)
+# Agent Skills CLI (`@uocnv1998/agent-kit`)
 
 A powerful command-line tool designed to scaffold and manage AI Agent environments. This tool specifically builds the foundation for AI agents (like Antigravity) by setting up structured **Skills**, **Rules**, and **Workflows** within your project.
 
@@ -11,14 +11,14 @@ The **Agent Skills CLI** streamlines the process of initializing a project for s
 You can run this tool directly using `npx` without installation:
 
 ```bash
-npx @uocnv/agent-installer --role=<role_name>
+npx @uocnv1998/agent-kit --role=<role_name>
 ```
 
 Replace `<role_name>` with one of the supported roles.
 
 ### Example:
 ```bash
-npx @uocnv/agent-installer --role=dev
+npx @uocnv1998/agent-kit --role=dev
 ```
 
 ## 🎭 Supported Roles
@@ -46,10 +46,10 @@ your-project/
 
 ## ⚙️ How it Works
 
-The CLI copies pre-defined templates from the `@uocnv/agent-installer` package into your local `.agent` folder:
+The CLI copies pre-defined templates from the `@uocnv1998/agent-kit` package into your local `.agent` folder:
 1. **Selective Skills**: Only the skills relevant to the chosen role are copied.
 2. **Workflows**: Role-specific `*-workflow.md` files are placed in the workflows directory.
-3. **Rules**: Role-specific `*-base.md` rules are established to guide the agent's behavior.
+3. **Rules**: Role-specific `GEMINI.md` rules are established to guide the agent's behavior.
 
 ## 🤝 Contributing
 
