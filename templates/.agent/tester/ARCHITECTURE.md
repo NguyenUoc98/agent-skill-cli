@@ -24,4 +24,4 @@ Modular knowledge domains for testing.
 
 ## 🛠️ Rules
 
-- `base.md`: Guidelines for test engineering and quality standards.
+- `GEMINI.md`: Guidelines for test engineering and quality standards.

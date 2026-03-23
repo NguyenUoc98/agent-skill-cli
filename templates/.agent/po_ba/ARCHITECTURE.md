@@ -25,4 +25,4 @@ Modular knowledge domains for product management.
 
 ## 🛠️ Rules
 
-- `base.md`: Guidelines for product requirements and documentation standards.
+- `GEMINI.md`: Guidelines for product requirements and documentation standards.

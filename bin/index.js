@@ -108,14 +108,28 @@ try {
 
     // 4. Setup OpenSpec for Dev Roles
     if (role === 'frontend' || role === 'backend') {
-        console.log(`${colors.pipe} Installing OpenSpec framework globally...`);
         try {
-            // Install globally via npm
-            execSync('npm install -g @fission-ai/openspec@latest', { stdio: 'inherit' });
+            console.log(`${colors.pipe} Checking if OpenSpec is installed...`);
+            let isInstalled = false;
+            try {
+                execSync('openspec --version', { stdio: 'ignore' });
+                isInstalled = true;
+                console.log(`${colors.info} OpenSpec is already installed globally.`);
+            } catch (e) {
+                // Not installed
+            }
+
+            if (!isInstalled) {
+                console.log(`${colors.pipe} Installing OpenSpec framework globally...`);
+                // Install globally via npm
+                execSync('npm install -g @fission-ai/openspec@latest', { stdio: 'inherit' });
+            }
 
             console.log(`\n\n${colors.pipe} Initializing OpenSpec for the project...`);
-            // Run native OpenSpec commands without npx wrapper
-            execSync('openspec init', { stdio: 'inherit', cwd: currentDir });
+            // Only run init if openspec directory doesn't exist to avoid errors
+            if (!fs.existsSync(path.join(currentDir, 'openspec'))) {
+                execSync('openspec init', { stdio: 'inherit', cwd: currentDir });
+            }
 
             // Automatically configure OpenSpec to generate artifacts in Vietnamese
             const openspecConfigPath = path.join(currentDir, 'openspec', 'config.yaml');
@@ -130,7 +144,7 @@ try {
             }
 
             execSync('openspec update', { stdio: 'inherit', cwd: currentDir });
-            console.log(`${colors.pipe} OpenSpec structure created`);
+            console.log(`${colors.pipe} OpenSpec structure created/updated`);
         } catch (specError) {
             console.error(`\n${colors.cross} OpenSpec setup failed. You may need 'sudo' permissions on Mac/Linux.`);
             console.error(`${colors.pipe} Run manually: sudo npm install -g @fission-ai/openspec@latest`);

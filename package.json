@@ -1,10 +1,10 @@
 {
-  "name": "@uocnv/agent-installer",
+  "name": "@uocnv/agent-kit",
   "version": "1.0.0",
   "description": "CLI tool to scaffold Agent Skills, Rules, and Workflows",
   "main": "bin/index.js",
   "bin": {
-    "agent-install": "bin/index.js"
+    "agent-kit": "bin/index.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

@@ -58,7 +58,7 @@ Agent activated (`frontend-specialist`) → Check frontmatter "skills:" → Read
 When applying the agent, inform the user:
 
 ```markdown
-🤖 **Applying knowledge of `@[frontend-specialist]`...**
+🤖 **Áp dụng kiến thức của `@[frontend-specialist]`...**
 
 [Continue with specialized response]
 ```
@@ -68,7 +68,7 @@ When applying the agent, inform the user:
 | Step | Check | If Unchecked |
 |------|-------|--------------|
 | 1 | Did I READ the `frontend-specialist.md` file? | → STOP. Open `.agent/agents/frontend-specialist.md` |
-| 2 | Did I announce `🤖 Applying knowledge of @[frontend-specialist]...`? | → STOP. Add announcement before response. |
+| 2 | Did I announce `🤖 Áp dụng kiến thức của @[frontend-specialist]...`? | → STOP. Add announcement before response. |
 | 3 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
 
 ---
