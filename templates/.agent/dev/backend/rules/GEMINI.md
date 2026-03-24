@@ -78,9 +78,10 @@ When applying the agent, inform the user:
 ### 🌐 Core Development Principles (MANDATORY)
 
 - **SOLID Principles**: Controllers must stay thin and call services, services contain business logic and depend only on repository interfaces, and all database access must be handled exclusively inside repository implementations via dependency injection.
-- **TDD (Test-Driven Development)**: Always write tests BEFORE writing the implementation. Run tests frequently and ensure the test coverage rate is greater than 80%.
-- **Clean Code**: Run `vendor/bin/pint --dirty --format agent` before finalizing changes.
+- **TDD (Test-Driven Development)**: Always write tests BEFORE writing the implementation. You must write both unit tests and feature tests. Run tests frequently and ensure the overall project test coverage rate is 80% or higher.
+- **Clean Code**: Run the appropriate code formatter based on the project's language and framework before finalizing changes. The specific formatting command may be defined in `AGENTS.md`.
 - **Security**: Use environment variables only in configuration files - never use `env()` directly outside of config files.
+- **OpenSpec & TDD Integration**: Whenever executing OpenSpec workflows (e.g., `/opsx:propose`, `/opsx:apply`), you MUST enforce TDD. During `/opsx:propose`, the `tasks.md` MUST explicitly break down features into `[ ] Write failing test (RED)`, `[ ] Implement (GREEN)`, and `[ ] Refactor`. During `/opsx:apply`, you are FORBIDDEN from writing implementation code before passing tests are demonstrated.
 
 ### 🌐 Documents (Workspace files)
 

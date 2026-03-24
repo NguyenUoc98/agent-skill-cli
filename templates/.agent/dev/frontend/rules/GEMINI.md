@@ -83,6 +83,7 @@ When applying the agent, inform the user:
 - **Clean Code & Formatting**: Run `npm run lint` and `npm run format` (or equivalent) before finalizing changes. Ensure consistent naming (PascalCase for Components, camelCase for variables/functions).
 - **Accessibility (a11y)**: Semantic HTML is mandatory. Every interactive element must be keyboard-accessible and have appropriate ARIA attributes.
 - **Performance**: Minimize client-side JavaScript. Use Next.js Server Components by default. Optimize images and avoid unnecessary re-renders.
+- **OpenSpec & TDD Integration**: Whenever executing OpenSpec workflows (e.g., `/opsx:propose`, `/opsx:apply`), you MUST enforce TDD. During `/opsx:propose`, the `tasks.md` MUST explicitly break down features into `[ ] Write failing test (RED)`, `[ ] Implement (GREEN)`, and `[ ] Refactor`. During `/opsx:apply`, you are FORBIDDEN from writing implementation code before passing tests are demonstrated.
 
 ### 🌐 Documents (Workspace files)
 

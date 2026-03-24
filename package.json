@@ -1,6 +1,6 @@
 {
   "name": "@uocnv1998/agent-kit",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CLI tool to scaffold Agent Skills, Rules, and Workflows",
   "main": "bin/index.js",
   "bin": {

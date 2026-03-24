@@ -128,7 +128,7 @@ try {
             console.log(`\n\n${colors.pipe} Initializing OpenSpec for the project...`);
             // Only run init if openspec directory doesn't exist to avoid errors
             if (!fs.existsSync(path.join(currentDir, 'openspec'))) {
-                execSync('openspec init', { stdio: 'inherit', cwd: currentDir });
+                execSync('openspec init --tools antigravity --force', { stdio: 'inherit', cwd: currentDir });
             }
 
             // Automatically configure OpenSpec to generate artifacts in Vietnamese
@@ -143,7 +143,7 @@ try {
                 }
             }
 
-            execSync('openspec update', { stdio: 'inherit', cwd: currentDir });
+            execSync('openspec update --force', { stdio: 'inherit', cwd: currentDir });
             console.log(`${colors.pipe} OpenSpec structure created/updated`);
         } catch (specError) {
             console.error(`\n${colors.cross} OpenSpec setup failed. You may need 'sudo' permissions on Mac/Linux.`);

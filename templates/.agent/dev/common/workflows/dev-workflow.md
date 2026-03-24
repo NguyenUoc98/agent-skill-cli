@@ -19,12 +19,16 @@ When receiving a task (via Jira Ticket or direct prompt), you must act as if the
   1. `proposal.md` - Why we're doing this, what's changing.
   2. `specs/` - Requirements and scenarios.
   3. `design.md` - Technical approach.
-  4. `tasks.md` - Implementation checklist.
+  4. `tasks.md` - Implementation checklist. **CRITICAL TDD REQUIREMENT: Each logical feature MUST be broken down into strict TDD steps in the checklist: `[ ] Write failing test (RED)`, `[ ] Implement minimum code to pass (GREEN)`, and `[ ] Refactor`.**
 - After generating these files, STOP and ask the user to review them via `/opsx:apply`.
 
-### Phase 2: Implementation (Tiến hành Code)
+### Phase 2: Implementation (Tiến hành Code - TDD MANDATORY)
 - **Command**: `/opsx:apply`
 - When you receive this command, you will start implementing the code strictly following the checklist in `tasks.md`.
+- 🔴 **TDD REQUIREMENT (MANDATORY)**: You MUST follow the **TDD Workflow (RED-GREEN-REFACTOR)** for EVERY implementation task. You are FORBIDDEN from writing implementation code before tests.
+    1. **RED**: Write the failing test FIRST based on the spec/task.
+    2. **GREEN**: Write the minimal code to make the test pass.
+    3. **REFACTOR**: Improve the code while keeping tests green.
 - As you complete portions of the work, mark off items in the `tasks.md` internal memory.
 - **MANDATORY**: Upon completing the backend implementation, you MUST document the new or updated APIs:
     1. Create or update an API Specification page on **Confluence** (using `atlassian-mcp-server_createConfluencePage` or `updateConfluencePage`).
