@@ -126,10 +126,8 @@ try {
             }
 
             console.log(`\n\n${colors.pipe} Initializing OpenSpec for the project...`);
-            // Only run init if openspec directory doesn't exist to avoid errors
-            if (!fs.existsSync(path.join(currentDir, 'openspec'))) {
-                execSync('openspec init --tools antigravity --force', { stdio: 'inherit', cwd: currentDir });
-            }
+            // Always run init to ensure tools are properly configured or refreshed
+            execSync('openspec init --tools antigravity --force', { stdio: 'inherit', cwd: currentDir });
 
             // Automatically configure OpenSpec to generate artifacts in Vietnamese
             const openspecConfigPath = path.join(currentDir, 'openspec', 'config.yaml');
@@ -149,6 +147,16 @@ try {
             console.error(`\n${colors.cross} OpenSpec setup failed. You may need 'sudo' permissions on Mac/Linux.`);
             console.error(`${colors.pipe} Run manually: sudo npm install -g @fission-ai/openspec@latest`);
             console.error(`${colors.pipe} Then run: openspec init && openspec update`);
+        }
+    }
+
+    // 5. Add .agent/ to .gitignore
+    const gitignorePath = path.join(currentDir, '.gitignore');
+    if (fs.existsSync(gitignorePath)) {
+        let gitignoreContent = fs.readFileSync(gitignorePath, 'utf8');
+        if (!gitignoreContent.includes('.agent/')) {
+            const separator = gitignoreContent.length > 0 && !gitignoreContent.endsWith('\n') ? '\n' : '';
+            fs.appendFileSync(gitignorePath, `${separator}.agent/\n`);
         }
     }
 

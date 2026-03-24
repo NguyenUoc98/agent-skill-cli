@@ -1,0 +1,7 @@
+# Test and temporary directories
+test-openspec/
+*.test.js
+
+# Development files
+.git/
+.gitignore

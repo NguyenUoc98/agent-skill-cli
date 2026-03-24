@@ -70,6 +70,8 @@ When applying the agent, inform the user:
 | 1 | Did I READ the `frontend-specialist.md` file? | → STOP. Open `.agent/agents/frontend-specialist.md` |
 | 2 | Did I announce `🤖 Áp dụng kiến thức của @[frontend-specialist]...`? | → STOP. Add announcement before response. |
 | 3 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
+| 4 | Did I read `AGENTS.md` to understand project rules? | → STOP. Run `view_file` on `AGENTS.md` before coding. |
+| 5 | Did I use Context7 MCP tools for library documentation? | → STOP. Call `resolve-library-id` and `query-docs` before guessing APIs. |
 
 ---
 
@@ -83,14 +85,14 @@ When applying the agent, inform the user:
 - **Clean Code & Formatting**: Run `npm run lint` and `npm run format` (or equivalent) before finalizing changes. Ensure consistent naming (PascalCase for Components, camelCase for variables/functions).
 - **Accessibility (a11y)**: Semantic HTML is mandatory. Every interactive element must be keyboard-accessible and have appropriate ARIA attributes.
 - **Performance**: Minimize client-side JavaScript. Use Next.js Server Components by default. Optimize images and avoid unnecessary re-renders.
-- **OpenSpec & TDD Integration**: Whenever executing OpenSpec workflows (e.g., `/opsx:propose`, `/opsx:apply`), you MUST enforce TDD. During `/opsx:propose`, the `tasks.md` MUST explicitly break down features into `[ ] Write failing test (RED)`, `[ ] Implement (GREEN)`, and `[ ] Refactor`. During `/opsx:apply`, you are FORBIDDEN from writing implementation code before passing tests are demonstrated.
+- **OpenSpec & TDD Integration**: Whenever executing OpenSpec workflows (e.g., `/opsx:propose`, `/opsx:apply`), you MUST enforce TDD. You must write both unit tests and feature tests. During `/opsx:propose`, the `tasks.md` MUST explicitly break down features into `[ ] Write failing test (RED)`, `[ ] Implement (GREEN)`, and `[ ] Refactor`. During `/opsx:apply`, you are FORBIDDEN from writing implementation code before passing tests are demonstrated.
 
 ### 🌐 Documents (Workspace files)
 
-- **System Context**: Read `.agent/ARCHITECTURE.md` at session start to understand Agents and Skills.
-- **Project Instructions**: Read `AGENTS.md` (located in the project root) at session start to understand the project architecture, design tokens, and coding conventions.
-- **Task Specs**: If `openspec/` exists, read relevant module docs (BA rules, API specs) before making architectural decisions.
-- **Libraries**: For library documentation, automatically use Context7 MCP tools to resolve library id and get docs.
+- **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` at the VERY FIRST step of the session to understand Agents and Skills.
+- **Project Instructions**: You MUST call `view_file` to read `AGENTS.md` (located in the project root) at the VERY FIRST step of the session to understand the project architecture, design tokens, and coding conventions. If it's missing, you MUST request the user to create it.
+- **Task Specs**: If `openspec/` exists, you MUST read relevant module docs (BA rules, API specs) before making architectural decisions.
+- **Libraries**: You MUST use the **Context7 MCP Server** (`resolve-library-id` followed by `query-docs`) to look up documentation and code examples BEFORE writing code that uses any external library or framework. DO NOT guess the syntax.
 - **Design Context**: Read Metadata, Design Tokens or guidelines shared by the Designer (specifically look for the **Design subtask** attached to the main Jira Story or linked Confluence pages).
 
 ### 🌐 Language & Communication

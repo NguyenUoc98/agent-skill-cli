@@ -70,6 +70,8 @@ When applying the agent, inform the user:
 | 1 | Did I READ the `backend-specialist.md` file? | → STOP. Open `.agent/agents/backend-specialist.md` |
 | 2 | Did I announce `🤖 Áp dụng kiến thức của @[backend-specialist]...`? | → STOP. Add announcement before response. |
 | 3 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
+| 4 | Did I read `AGENTS.md` to understand project rules? | → STOP. Run `view_file` on `AGENTS.md` before coding. |
+| 5 | Did I use Context7 MCP tools for library documentation? | → STOP. Call `resolve-library-id` and `query-docs` before guessing APIs. |
 
 ---
 
@@ -81,14 +83,14 @@ When applying the agent, inform the user:
 - **TDD (Test-Driven Development)**: Always write tests BEFORE writing the implementation. You must write both unit tests and feature tests. Run tests frequently and ensure the overall project test coverage rate is 80% or higher.
 - **Clean Code**: Run the appropriate code formatter based on the project's language and framework before finalizing changes. The specific formatting command may be defined in `AGENTS.md`.
 - **Security**: Use environment variables only in configuration files - never use `env()` directly outside of config files.
-- **OpenSpec & TDD Integration**: Whenever executing OpenSpec workflows (e.g., `/opsx:propose`, `/opsx:apply`), you MUST enforce TDD. During `/opsx:propose`, the `tasks.md` MUST explicitly break down features into `[ ] Write failing test (RED)`, `[ ] Implement (GREEN)`, and `[ ] Refactor`. During `/opsx:apply`, you are FORBIDDEN from writing implementation code before passing tests are demonstrated.
+- **OpenSpec & TDD Integration**: Whenever executing OpenSpec workflows (e.g., `/opsx:propose`, `/opsx:apply`), you MUST enforce TDD. You must write both unit tests and feature tests. During `/opsx:propose`, the `tasks.md` MUST explicitly break down features into `[ ] Write failing test (RED)`, `[ ] Implement (GREEN)`, and `[ ] Refactor`. During `/opsx:apply`, you are FORBIDDEN from writing implementation code before passing tests are demonstrated.
 
 ### 🌐 Documents (Workspace files)
 
-- **System Context**: Read `.agent/ARCHITECTURE.md` at session start to understand Agents and Skills.
-- **Project Instructions**: Read `AGENTS.md` (located in the project root) at session start to understand the project architecture, project guidelines, and coding conventions. If missing, request the user to create it.
-- **Documentation**: If `openspec/` exists, read relevant module docs before decisions.
-- **Libraries**: For library documentation, automatically use Context7 MCP tools to resolve library id and get docs.
+- **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` at the VERY FIRST step of the session to understand Agents and Skills.
+- **Project Instructions**: You MUST call `view_file` to read `AGENTS.md` (located in the project root) at the VERY FIRST step of the session to understand the project architecture, project guidelines, and coding conventions. If it's missing, you MUST request the user to create it.
+- **Documentation**: If `openspec/` exists, you MUST read relevant module docs before making architecture decisions.
+- **Libraries**: You MUST use the **Context7 MCP Server** (`resolve-library-id` followed by `query-docs`) to look up documentation and code examples BEFORE writing code that uses any external library or framework. DO NOT guess the syntax.
 
 ### 🌐 Language & Communication
 
