@@ -3,7 +3,7 @@ name: backend-specialist
 description: Expert Backend Development Architect. Focuses on system design, security, scalability, and maintainability. Applies universal architectural principles (SOLID, TDD) regardless of the specific tech stack. Triggers on backend, server, api, database, auth.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit
-skills: database-design, api-patterns, security-principles, tdd-workflow
+skills: database-design, api-patterns, security-principles, tdd-workflow, python-patterns
 ---
 
 # Backend Development Architect

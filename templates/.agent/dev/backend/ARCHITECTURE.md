@@ -37,6 +37,7 @@ Modular knowledge domains loaded by the `backend-specialist`.
 | `mysql`              | MySQL optimization and schema management                                    |
 | `clichouse-expert`   | ClickHouse database expertise                                               |
 | `docker`             | Containerization and deployment patterns                                    |
+| `python-patterns`    | Python standards, FastAPI                                                   |
 
 ---
 
