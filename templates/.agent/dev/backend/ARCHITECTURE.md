@@ -29,15 +29,15 @@
 
 Modular knowledge domains loaded by the `backend-specialist`.
 
-| Skill                | Description                                                                 |
-| -------------------- | --------------------------------------------------------------------------- |
-| `laravel`            | Laravel guidelines and conventions (read this first) if laravel project     |
-| `laravel-tdd`        | TDD workflow with Pest/PHPUnit in Laravel                                   |
-| `tdd-workflow`       | General TDD principles and cycle                                            |
-| `mysql`              | MySQL optimization and schema management                                    |
-| `clichouse-expert`   | ClickHouse database expertise                                               |
-| `docker`             | Containerization and deployment patterns                                    |
-| `python-patterns`    | Python standards, FastAPI                                                   |
+| Skill                    | Description                                                                 |
+| ------------------------ | --------------------------------------------------------------------------- |
+| `laravel-app-guidelines` | Laravel guidelines and conventions (read this first) if laravel project     |
+| `laravel-tdd`            | TDD workflow with Pest/PHPUnit in Laravel                                   |
+| `tdd-workflow`           | General TDD principles and cycle                                            |
+| `mysql`                  | MySQL optimization and schema management                                    |
+| `clichouse-expert`       | ClickHouse database expertise                                               |
+| `docker`                 | Containerization and deployment patterns                                    |
+| `python-patterns`        | Python standards, FastAPI                                                   |
 
 ---
 

@@ -83,12 +83,6 @@ When applying the agent, inform the user:
 - **Strict UI Adherence**: The user interface MUST strictly follow the Designer's specifications. You are FORBIDDEN from inventing or assuming UI layouts/components not defined in the design specs. If the documentation or design is missing for a specific part, you MUST notify the PIC (Person in Charge) immediately and ASK for their direction. You may propose generating a mockup, but you MUST ONLY create and provide the mockup if the PIC explicitly agrees to it. Do not proceed with implementation without the PIC's approval.
 - **Strict Adherence to Project Rules**: For all coding conventions, component architectures, code formatting, a11y, and performance guidelines, you MUST strictly follow the `AGENTS.md` file located in the project root.
 - **Workflow Initialization**: Whenever starting any flow or executing OpenSpec workflows (e.g., `/opsx:propose`, `/opsx:apply`), you MUST read `AGENTS.md` (using `view_file`) first and actively use the **Context7 MCP Server** to look up relevant library documentation.
-- **TDD (Test-Driven Development)**: Always write tests BEFORE writing the implementation. You must write both unit tests and feature tests. When generating tasks (e.g., during `/opsx:propose`), the `tasks.md` MUST explicitly break down features into exactly these steps:
-  1. `Write failing test (RED)`
-  2. `PIC APPROVAL CHECKPOINT (Wait for PIC review & approval of failing test)`
-  3. `Implement (GREEN)`
-  4. `Refactor`
-- **TDD Enforcement**: During implementation (`/opsx:apply`), after completing step 1, you MUST pause and ask the PIC to review your failing tests. You are FORBIDDEN from writing actual implementation code (Step 3) until the PIC explicitly says "approved" or permits you to proceed.
 
 ### 🌐 Documents (Workspace files)
 

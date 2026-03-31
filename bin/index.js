@@ -39,9 +39,9 @@ console.log(`\n${colors.check} Initializing environment for role: ${colors.cyan}
 try {
     let rolesToInstall = [];
     if (role === 'frontend') {
-        rolesToInstall = ['dev/common', 'dev/frontend'];
+        rolesToInstall = ['dev/frontend'];
     } else if (role === 'backend') {
-        rolesToInstall = ['dev/common', 'dev/backend'];
+        rolesToInstall = ['dev/backend'];
     } else if (role === 'dev') {
         console.error(`\n${colors.cross} Role 'dev' is no longer supported. Please use '--role=frontend' or '--role=backend'.`);
         process.exit(1);
