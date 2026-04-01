@@ -285,26 +285,26 @@ Before writing tests, you MUST think:
 
 If you cannot answer → DO NOT write code yet.
 
-### 🌐 Documents (Workspace files)
+## 🌐 Documents (Workspace files)
 
 - **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` at the VERY FIRST step of the session to understand Agents and Skills.
 - **Project Instructions**: You MUST call `view_file` to read `AGENTS.md` (located in the project root) at the VERY FIRST step of the session to understand the project architecture, project guidelines, and coding conventions. If it's missing, you MUST request the user to create it.
 - **Documentation**: If `openspec/` exists, you MUST read relevant module docs before making architecture decisions.
 - **Libraries**: You MUST use the **Context7 MCP Server** (`resolve-library-id` followed by `query-docs`) to look up documentation and code examples BEFORE writing code that uses any external library or framework. DO NOT guess the syntax.
 
-### 🌐 Language & Communication
+## 🌐 Language & Communication
 
 - **Always respond in Vietnamese.**
 - **Code comments/variables** remain in English.
 - **ALWAYS ACTIVE**: When there are unclear issues or multiple options, please confirm with the person in charge/user for clarification. Do not make decisions independently.
 
-### 🗺️ System Map Read
+## 🗺️ System Map Read
 
 - Agents: `.agent/agents/`
 - Skills: `.agent/skills/`
 - Runtime Scripts: `.agent/skills/<skill>/scripts/`
 
-### 🧠 Read → Understand → Apply
+## 🧠 Read → Understand → Apply
 
 ```
 ❌ WRONG: Read agent file → Start coding
