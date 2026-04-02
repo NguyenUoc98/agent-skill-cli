@@ -15,8 +15,8 @@ Whenever receiving a Jira Ticket for testing or when called via `/tester-workflo
 - Store plans and test scripts physically in the local system under the Task-specific folder.
 
 ### Step 3: CHECKPOINT (Plan Review)
-- Before creating a Jira Sub-task, you **MUST** pause, ask for permission from the user (QA PIC), and WAIT for their response: 
-  > *"Dear QA PIC, I have finalized the test cases and test plan (2-2-1). Do you approve of me creating the Sub-task on Jira and proceeding with the automated execution?"*
+- Before creating a Jira Sub-task, you **MUST** pause and confirm with the QA PIC: 
+  > *"Gửi QA PIC, tôi đã chuẩn bị xong bộ test case và kế hoạch test (2-2-1). Vui lòng xem xét trước khi tôi tạo Sub-task và bắt đầu thực hiện."*
 
 ### Step 4: Create Sub-task & Sync to Jira
 - **CRITICAL**: Do NOT execute any Jira creation tools until the user explicitly says yes.
