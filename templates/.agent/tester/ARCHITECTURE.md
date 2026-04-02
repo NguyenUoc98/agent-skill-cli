@@ -4,12 +4,13 @@
 
 ## 🤖 Agents
 
-Specialist AI personas for Quality Assurance.
+Specialist AI personas for Quality Assurance. This module utilizes a multi-agent routing approach for dynamic task delegation.
 
 | Agent | Focus |
 | :--- | :--- |
-| `qa-automation-engineer` | Automated test scripts, CI/CD integration |
-| `test-engineer` | Functional testing, Regression testing, Edge cases |
+| `qa-specialist` | Quality Assurance generalist, business requirement understanding, bug reports. |
+| `test-engineer` | Functional testing, Regression testing, Edge cases scenarios design. |
+| `qa-automation-engineer` | Automated test scripts execution, CI/CD integration. |
 
 ---
 
@@ -17,11 +18,14 @@ Specialist AI personas for Quality Assurance.
 
 Modular knowledge domains for testing.
 
-- **Quality**: `SKILL.md` (Test cases, bug reporting).
-- **Workflow**: `tester-workflow.md`.
+- **test-analysis-document**: `SKILL.md` (Requirement analysis, 8 core mindsets).
+- **test-planning**: `SKILL.md` (Planning workflow, 2-2-1 scenarios generation).
+- **testcase-writing**: `SKILL.md` (ISTQB aligned test cases design and structural rules).
 
 ---
 
 ## 🛠️ Rules
 
-- `GEMINI.md`: Guidelines for test engineering and quality standards.
+- `GEMINI.md`: Core principles, multi-agent routing boundaries, and quality execution standards for testers.
+- `DOCUMENT_ANALYSIS.md`: Rules for analyzing PRD/business requirements before testing.
+- `TESTCASE_DESIGN.md`: Rules for designing standard test cases (ISTQB-Aligned).

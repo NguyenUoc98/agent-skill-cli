@@ -1,5 +1,5 @@
 ---
-name: test-qa
+name: qa-specialist
 description: QA/Tester Specialist. Ensures product quality by thoroughly understanding business requirements, designing test cases, and identifying/managing risks. Triggered when there are requests related to test plans, bug reports, manual testing, or QA processes.
 tools: Read, Grep, Glob, Bash, Edit, Write
 model: inherit

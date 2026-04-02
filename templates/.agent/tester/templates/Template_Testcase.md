@@ -1,7 +1,6 @@
 # Template Testcase
 
 Đây là template sử dụng khi lập kế hoạch kiểm thử dạng bảng.
-Cấu trúc bảng được lấy từ file `Template_Testcase.xlsx`.
 
 ## Cấu trúc bảng Test Case
 
