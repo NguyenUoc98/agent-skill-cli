@@ -18,7 +18,9 @@ Whenever receiving a Jira Ticket for testing or when called via `/tester-workflo
 - Before creating a Jira Sub-task, you **MUST** pause and confirm with the QA PIC: 
   > *"Gửi QA PIC, tôi đã chuẩn bị xong bộ test case và kế hoạch test (2-2-1). Vui lòng xem xét trước khi tôi tạo Sub-task và bắt đầu thực hiện."*
 
-- Once the plan is approved, use `mcp-atlassian` to create a **Sub-task** in the original Jira task. **MANDATORY**: The Sub-task name MUST follow the format `[Viết testcase] <Original Task Name>`.
+### Step 4: Create Sub-task & Sync to Jira
+- **CRITICAL**: Do NOT execute any Jira creation tools until the user explicitly says yes.
+- Once the user explicitly approves, use `mcp-atlassian` to create a **Sub-task** in the original Jira task (e.g., "Test Cases & Execution Plan").
 - **MANDATORY**: The Sub-task's description **MUST** include the full content of the Test Cases (2-2-1 scenarios) and the Test Plan details for cloud visibility.
 - Provide the generated set of test scenarios as a description or a comment on this newly created sub-task.
 
@@ -27,5 +29,7 @@ Whenever receiving a Jira Ticket for testing or when called via `/tester-workflo
 - Evaluate and save outputs (Logs, JSON reports) locally as evidence.
 
 ### Step 6: Sync Alerts (Handoff Bug to Jira)
-- Only when there is a final result (Test Fail), immediately create a Bug on Jira using `mcp-atlassian`.
-- Describe Steps to Reproduce and insert error Logs or copy Screenshot results from the local directory. Link the Bug to the parent Ticket.
+- Only when there is a final result (Test Fail), you **MUST** pause and ask the user (QA PIC) for explicit permission before creating a Bug on Jira using `mcp-atlassian`. For example:
+  > *"Dear QA PIC, I have completed the test execution and found failing tests. Do you approve of me creating a Bug on Jira?"*
+- **CRITICAL**: Do NOT execute any Jira creation tools until the user explicitly says yes.
+- Once approved, create the Bug, describe Steps to Reproduce and insert error Logs or copy Screenshot results from the local directory. Link the Bug to the parent Ticket.
