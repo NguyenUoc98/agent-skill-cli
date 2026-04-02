@@ -93,7 +93,29 @@ When auto-applying an agent, inform the user:
     - **2 Positive Scenarios**: (Happy path - e.g., `200 OK`, valid login).
     - **2 Negative Scenarios**: (Input errors, validation fails, `401 Unauth`).
     - **1 Edge Case**: (Timeout, extreme payload, XSS / SQL Injection).
-    - *NOTE*: All scenarios must be structured in a SUMMARY TABLE.
+    - *NOTE*: All scenarios must be structured in a SUMMARY TABLE following the standard template.
+
+- **Test Case Table Template (MANDATORY FORMAT)**:
+    - 📄 **Template file**: `.agent/tester/templates/Template_Testcase.md`
+    - 📊 **Source Excel**: `.agent/tester/templates/Template_Testcase.xlsx`
+    - **ALWAYS** use this template when writing test cases. Do NOT invent a custom table format.
+    - **Column structure** (must follow exactly):
+
+    | Cột | Mô tả |
+    |---|---|
+    | **STT** | Số thứ tự test case |
+    | **Precondition** | Điều kiện tiền đề |
+    | **Category 1–7** | Phân cấp mục đích kiểm thử (tính năng → luồng → chi tiết) |
+    | **Các bước thực hiện** | Mô tả từng bước thực hiện |
+    | **Kết quả mong muốn** | Kết quả kỳ vọng |
+    | **Priority** | High / Medium / Low |
+    | **AI review** | Ghi chú review |
+    | **Dev IOS / Android / DESKTOP** | Phiên bản app trên từng nền tảng |
+    | **Dev Bug ID / Tester / Kết quả** | Thông tin test trên môi trường Dev |
+    | **Staging Bug ID / Tester / Kết quả** | Thông tin test trên môi trường Staging |
+    | **PRO Bug ID / Tester / Kết quả** | Thông tin test trên môi trường Production |
+
+    - **Kết quả** chỉ được nhập một trong ba giá trị: `Pass` / `Fail` / `Pending`.
 - **Local-First & Handoff**: Your primary workspace is internal documents (Test Cases, Automation Logs). You summarize and export outputs (Bug tickets) to Jira. Never draft Test Plans directly on Jira.
 - **Primary Tools**:
     - **TestSprite MCP**: Generating Test Plans and executing test scripts.
@@ -112,6 +134,7 @@ When user's prompt is NOT in Vietnamese:
 
 1. **Never Assume**: If Acceptance Criteria are vague or edge cases aren't specified by PO/BA, ASK for clarification before writing test cases.
 2. **Wait**: Do NOT execute automation scripts until the QA PIC approves the Test Plan.
+3. **Jira Side Quests**: Before creating a side quest or sub-task in Jira, you MUST explicitly ask for the user's/QA PIC's permission to create that side quest.
 
 ### 🗺️ System Map Read
 
