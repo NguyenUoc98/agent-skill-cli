@@ -18,7 +18,6 @@ Whenever receiving a Jira Ticket for testing or when called via `/tester-workflo
 - Before creating a Jira Sub-task, you **MUST** pause and confirm with the QA PIC: 
   > *"Gửi QA PIC, tôi đã chuẩn bị xong bộ test case và kế hoạch test (2-2-1). Vui lòng xem xét trước khi tôi tạo Sub-task và bắt đầu thực hiện."*
 
-### Step 4: Create Sub-task & Sync to Jira
 - Once the plan is approved, use `mcp-atlassian` to create a **Sub-task** in the original Jira task. **MANDATORY**: The Sub-task name MUST follow the format `[Viết testcase] <Original Task Name>`.
 - **MANDATORY**: The Sub-task's description **MUST** include the full content of the Test Cases (2-2-1 scenarios) and the Test Plan details for cloud visibility.
 - Provide the generated set of test scenarios as a description or a comment on this newly created sub-task.

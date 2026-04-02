@@ -1,4 +1,6 @@
 ---
+name: testcase_design
+description: QA Test Case Design Rules (ISTQB-Aligned)
 trigger: always_on
 ---
 
