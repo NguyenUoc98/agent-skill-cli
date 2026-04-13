@@ -104,6 +104,20 @@ try {
             }
         });
         console.log(`${colors.pipe} Installed agents, rules, skills, workflows for ${colors.cyan}${r}${colors.reset}`);
+
+        // Specific handling for DA role: copy data_dictionary to project root
+        if (r === 'da' || r === 'data') {
+            const dataDictSrc = path.join(__dirname, '..', 'templates', 'data_dictionary');
+            const dataDictDest = path.join(currentDir, 'data_dictionary');
+            if (fs.existsSync(dataDictSrc)) {
+                if (!fs.existsSync(dataDictDest)) {
+                    fs.cpSync(dataDictSrc, dataDictDest, { recursive: true, force: true });
+                    console.log(`${colors.pipe} Installed ${colors.cyan}data_dictionary/${colors.reset} to project root`);
+                } else {
+                    console.log(`${colors.pipe} ${colors.cyan}data_dictionary/${colors.reset} already exists in project root, skipping to prevent overwrites`);
+                }
+            }
+        }
     });
 
     // 4. Setup OpenSpec for Dev Roles

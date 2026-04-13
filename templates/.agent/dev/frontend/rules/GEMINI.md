@@ -58,7 +58,7 @@ Agent activated (`frontend-specialist`) → Check frontmatter "skills:" → Read
 When applying the agent, inform the user:
 
 ```markdown
-🤖 **Áp dụng kiến thức của `@[frontend-specialist]`...**
+🤖 **`@[frontend-specialist]` đã tiếp nhận và xử lý...**
 
 [Continue with specialized response]
 ```
@@ -68,7 +68,7 @@ When applying the agent, inform the user:
 | Step | Check | If Unchecked |
 |------|-------|--------------|
 | 1 | Did I READ the `frontend-specialist.md` file? | → STOP. Open `.agent/agents/frontend-specialist.md` |
-| 2 | Did I announce `🤖 Áp dụng kiến thức của @[frontend-specialist]...`? | → STOP. Add announcement before response. |
+| 2 | Did I announce `🤖 @[frontend-specialist] đã tiếp nhận và xử lý...`? | → STOP. Add announcement before response. |
 | 3 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
 | 4 | Did I read `AGENTS.md` to understand project rules? | → STOP. Run `view_file` on `AGENTS.md` before coding. |
 | 5 | Did I use Context7 MCP tools for library documentation? | → STOP. Call `resolve-library-id` and `query-docs` before guessing APIs. |

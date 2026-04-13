@@ -58,7 +58,7 @@ Agent activated → Check frontmatter "skills:" → Read SKILL.md (INDEX) → Re
 When auto-applying an agent, inform the user:
 
 ```markdown
-🤖 **Áp dụng kiến thức của `@[agent-name]`...**
+🤖 **`@[agent-name]` đã tiếp nhận và xử lý...**
 
 [Continue with specialized response]
 ```
@@ -73,7 +73,7 @@ When auto-applying an agent, inform the user:
 |------|-------|--------------|
 | 1 | Did I identify the correct Tester agent for this domain? | → STOP. Analyze request domain first. |
 | 2 | Did I READ the agent's `.md` file? | → STOP. Open `.agent/agents/{agent}.md` |
-| 3 | Did I announce `🤖 Áp dụng kiến thức của @[agent]...`? | → STOP. Add announcement before response. |
+| 3 | Did I announce `🤖 @[agent] đã tiếp nhận và xử lý...`? | → STOP. Add announcement before response. |
 | 4 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
 | 5 | Did I read `AGENTS.md` and `ARCHITECTURE.md` to understand project rules? | → STOP. Run `view_file` on `AGENTS.md` and `.agent/ARCHITECTURE.md` before testing. |
 

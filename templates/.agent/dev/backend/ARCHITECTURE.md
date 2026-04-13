@@ -33,7 +33,6 @@ Modular knowledge domains loaded by the `backend-specialist`.
 | ------------------------ | --------------------------------------------------------------------------- |
 | `laravel-app-guidelines` | Laravel guidelines and conventions (read this first) if laravel project     |
 | `laravel-tdd`            | TDD workflow with Pest/PHPUnit in Laravel                                   |
-| `tdd-workflow`           | General TDD principles and cycle                                            |
 | `mysql`                  | MySQL optimization and schema management                                    |
 | `clichouse-expert`       | ClickHouse database expertise                                               |
 | `docker`                 | Containerization and deployment patterns                                    |
@@ -48,3 +47,4 @@ Slash command procedures. Invoke with `/command`.
 | Command      | Description                 | Location                            |
 | ------------ | --------------------------- | ----------------------------------- |
 | `/brainstorm`| Socratic discovery & design | `.agent/workflows/brainstorm.md`    |
+| `/dict:add`  | Import table to Dictionary  | `.agent/workflows/dict_add.md`      |

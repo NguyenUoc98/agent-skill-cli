@@ -37,6 +37,7 @@ Agent activated (`backend-specialist`) → Check frontmatter "skills:" → Read 
 | **SIMPLE CODE**  | "fix", "add", "change" (single file)       | TIER 0 + TIER 1 (lite)         | Inline Edit                 |
 | **COMPLEX CODE** | "build", "create", "implement", "refactor" | TIER 0 + TIER 1 (full) + Agent | **{task-slug}.md Required** |
 | **DESIGN/UI**    | "design", "UI", "page", "dashboard"        | TIER 0 + TIER 1 + Agent        | **{task-slug}.md Required** |
+| **DICTIONARY**   | "/dict:add", "import table", "ddl"         | `/dict:add` Workflow           | Variable                    |
 | **SLASH CMD**    | /create, /orchestrate, /debug              | Command-specific flow          | Variable                    |
 
 ---
@@ -58,7 +59,7 @@ Agent activated (`backend-specialist`) → Check frontmatter "skills:" → Read 
 When applying the agent, inform the user:
 
 ```markdown
-🤖 **Áp dụng kiến thức của `@[backend-specialist]`...**
+🤖 **`@[backend-specialist]` đã tiếp nhận và xử lý...**
 
 [Continue with specialized response]
 ```
@@ -68,7 +69,7 @@ When applying the agent, inform the user:
 | Step | Check | If Unchecked |
 |------|-------|--------------|
 | 1 | Did I READ the `backend-specialist.md` file? | → STOP. Open `.agent/agents/backend-specialist.md` |
-| 2 | Did I announce `🤖 Áp dụng kiến thức của @[backend-specialist]...`? | → STOP. Add announcement before response. |
+| 2 | Did I announce `🤖 @[backend-specialist] đã tiếp nhận và xử lý...`? | → STOP. Add announcement before response. |
 | 3 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
 | 4 | Did I read `AGENTS.md` to understand project rules? | → STOP. Run `view_file` on `AGENTS.md` before coding. |
 | 5 | Did I use Context7 MCP tools for library documentation? | → STOP. Call `resolve-library-id` and `query-docs` before guessing APIs. |
@@ -115,16 +116,20 @@ Whenever the user calls an OpenSpec workflow (e.g. `/opsx:propose`, `/opsx:apply
 
 ## 🌐 Documents (Workspace files)
 
-- **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` at the VERY FIRST step of the session to understand Agents and Skills.
+- **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` and `data_dictionary/README.md` at the VERY FIRST step of the session to understand Agents, Skills, and the database topography.
 - **Project Instructions**: You MUST call `view_file` to read `AGENTS.md` (located in the project root) at the VERY FIRST step of the session to understand the project architecture, project guidelines, and coding conventions. If it's missing, you MUST request the user to create it.
 - **Documentation**: If `openspec/` exists, you MUST read relevant module docs before making architecture decisions.
 - **Libraries**: You MUST use the **Context7 MCP Server** (`resolve-library-id` followed by `query-docs`) to look up documentation and code examples BEFORE writing code that uses any external library or framework. DO NOT guess the syntax.
+
+## 🛑 MARTIAL LAW: NO ASSUMPTIONS (ASK BEFORE DECIDING - HARD RULE)
+
+- **Handling Ambiguity:** If a user request lacks details, business logic clarity, or if you are unsure about the behavior of a function, you MUST STOP and list questions to clarify the requirements. Do not proceed until clarified.
+- **Critical Decisions:** For critical tasks (e.g., DB schema design, determining architecture, or preparing Mock Data for Integration Tests), you MUST NEVER make decisions independently. You must present your proposed plan and EXPLICITLY REQUEST USER CONFIRMATION before writing any execution code.
 
 ## 🌐 Language & Communication
 
 - **Always respond in Vietnamese.**
 - **Code comments/variables** remain in English.
-- **ALWAYS ACTIVE**: When there are unclear issues or multiple options, please confirm with the person in charge/user for clarification. Do not make decisions independently.
 
 ## 🗺️ System Map Read
 
