@@ -8,24 +8,23 @@ For each architectural layer (Controller → Service → Repository), you MUST f
 
 1. **RED Phase (Write Tests First):** Define and write the failing tests before writing ANY production logic.
 2. **Execute & Prove:** Run the tests using the appropriate framework command (e.g., `pytest`, `phpunit`, `jest`) via `run_command` to verify they fail. Show the failure logs.
-3. **Summarize:** You MUST provide a summary of the written tests exactly in this format before stopping:
+3. **Summarize and Document:** If the number of tests is large, a brief chat summary is insufficient. You MUST create a detailed Test Report documenting the exact test plan, test cases, inputs, and logic you just wrote.
+   - **File Location:** Save this file to `specs/tests/[feature-name]-test-plan.md` (or a dedicated docs folder).
+   - **Content:** The file must contain a full markdown table explaining ALL tests (Name, Scenario, Input, Validation Logic).
+   - After saving the file, you MUST provide a short summary in the chat exactly in this format:
 
-   - **Test Summary Explanation:** (Example)
-     *TestPaginationParams — 4 tests*
-     | Test | Scenario | Validation Logic |
-     |------|----------|------------------|
-     | `test_default_values` | ✅ Defaults | No inputs → page=1, per_page=50 |
-     | `test_invalid_per_page_raises` | ❌ per_page=77 | Not in whitelist → raise error |
-
-   - **Test Type Distribution:** (Example)
+   - **Test Type Distribution:**
      | Group | Type | Count | % |
      |------|------|----------|---|
      | Schema validation | Unit | 4 tests | 100% |
 
-4. **STOP YOUR COMPLETION:** Ask the user: "I have written and executed the tests, returning a FAIL result (see logs). Could you please review the test case summary above to ensure all scenarios are covered before I proceed to write the implementation logic (GREEN)?"
+   - **Test Report Link:** `[Link to the generated test plan file]`
+
+4. **STOP YOUR COMPLETION:** Ask the user: "I have written the tests and generated the detailed Test Plan document (linked above). The tests are currently returning a FAIL result (see logs). Could you please review the document to ensure all business scenarios and edge cases are covered before I proceed to write the implementation logic (GREEN)?"
 5. **Wait for Approval:** Do NOT generate implementation code in the same response. You MUST yield.
 6. **GREEN Phase:** Only after user approval, implement the minimum code to make tests pass.
 7. **Refactor:** Clean up the code according to SOLID principles.
+8. **Final Test Report Update:** After the features are implemented and all tests successfully pass, you MUST update the previously created Test Plan document. Append a "Final Execution Results" section marking the successful completion (PASS) of all test cases, creating a living documentation of the test outcomes.
 
 ---
 
