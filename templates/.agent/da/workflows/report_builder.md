@@ -225,9 +225,18 @@ Nếu bạn có tài liệu **không có cấu trúc rõ ràng** (PowerBI export
 4. **Responsive layout** — Desktop-first, mobile-aware.
 5. **Performance** — Use `useMemo` for heavy data transformations.
 6. **Create `04-ui-spec.md`** — Use `write_to_file` to create `blueprint/[report-slug]/04-ui-spec.md` listing the components designed and the files created.
+7. **Create E2E Test Plan** — Define Playwright user flow tests targeting `data-testid` and roles. Use `write_to_file` to create `blueprint/[report-slug]/05-e2e-test-plan.md` detailing the test cases.
+
+**⛔ CHECKPOINT:**
+> "Bản thiết kế giao diện Dashboard UI (components, layout, filter) kèm kịch bản test Playwright E2E này đã đáp ứng đầy đủ yêu cầu chưa? Gõ **'yes'** để tôi tiến hành Code (Implement) và Kiểm thử tự động (E2E)."
+
+**→ DO NOT proceed to implement code until user confirms.**
+
+8. **Implement Code & Playwright Tests** — Write the React components and the Playwright test scripts.
+9. **Self-Check & Fix (Mandatory)** — Using the Playwright MCP server or local terminal, the Agent MUST execute the E2E tests. If the tests FAIL, the Agent must analyze the Playwright error logs, edit the React TSX files to fix the UI bugs, and re-run until GREEN.
 
 ---
 
 ## 📋 Final Synthesis Report
 
-After Phase 4, present a final synthesis summary to the user outlining the completed phases (1-4), files generated, and next steps (e.g., testing endpoints, stakeholder review).
+After Phase 4 is green, present a final synthesis summary to the user outlining the completed phases (1-4), files generated (APIs, UI, Tests), and next steps.

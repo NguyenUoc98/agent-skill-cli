@@ -118,7 +118,9 @@ When building Integration Tests (testing the full request lifecycle from Router 
    - Use a dedicated Test Database if the framework supports it configured natively (e.g., Laravel's `phpunit.xml` or FastAPI's detached test DB).
    - If the project does not have a clear Test DB connection configured, **STOP AND ASK THE USER** to provide a test DB connection URI before proceeding with the execution.
 
-2. **Data Preparation & User Confirmation (Strict Seeding):**
+2. **Data Preparation & Isolation (Strict Seeding & Truncation):**
+   - **Independent Datasets:** Every integration test file MUST have its own independent mockup dataset. Do NOT share or reuse mock test data between different test scopes.
+   - **State Isolation:** When running tests, you MUST explicitly truncate the affected tables before inserting the new mock dataset to ensure a completely clean slate, avoiding data collision from other tests.
    - Do not rely on existing data. You MUST explicitly write code to create mock records into the test DB.
    - **MANDATORY CONFIRMATION:** Before running the integration test or inserting any test data into the DB, you MUST formulate the exact Mock Dataset you plan to seed (the input state) and the Expected Output. **STOP TO ASK THE USER:** "Does this mock dataset correctly and sufficiently represent the business logic and edge cases?". Only proceed to insert and run tests AFTER user approval.
    - Clean up (rollback or truncate) the test DB data during teardown to avoid state leakage between tests.

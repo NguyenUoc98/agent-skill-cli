@@ -118,7 +118,9 @@ When building Integration Tests (testing the full request lifecycle from Router 
    - Use a dedicated Test Database if the framework supports it configured natively (e.g., Laravel's `phpunit.xml` or FastAPI's detached test DB).
    - If the project does not have a clear Test DB connection configured, **STOP AND ASK THE USER** to provide a test DB connection URI before proceeding with the execution.
 
-2. **Data Preparation & User Confirmation (Strict Seeding):**
+2. **Data Preparation & Isolation (Strict Seeding & Truncation):**
+   - **Independent Datasets:** Every integration test file MUST have its own independent mockup dataset. Do NOT share or reuse mock test data between different test scopes.
+   - **State Isolation:** When running tests, you MUST explicitly truncate the affected tables before inserting the new mock dataset to ensure a completely clean slate, avoiding data collision from other tests.
    - Do not rely on existing data. You MUST explicitly write code to create mock records into the test DB.
    - **MANDATORY CONFIRMATION:** Before running the integration test or inserting any test data into the DB, you MUST formulate the exact Mock Dataset you plan to seed (the input state) and the Expected Output. **STOP TO ASK THE USER:** "Does this mock dataset correctly and sufficiently represent the business logic and edge cases?". Only proceed to insert and run tests AFTER user approval.
    - Clean up (rollback or truncate) the test DB data during teardown to avoid state leakage between tests.
@@ -139,3 +141,16 @@ Before writing tests, you MUST think:
 **Strict Anti-patterns (FORBIDDEN):**
 - Writing implementation BEFORE tests.
 - Writing test and logic in the exact same LLM turn.
+- Ignoring failing tests.
+
+## 11. Frontend E2E Testing (Playwright)
+
+Frontend UI development must strictly coordinate with Playwright E2E testing to ensure absolute reliability of user flows.
+
+1. **Document Before Code:** You MUST generate a UI Spec and an E2E Test Plan document (e.g., `05-e2e-test-plan.md`) outlining the critical scenarios beforehand, and **await user approval** before writing implementation code.
+2. **Translate to Scripts (`*.spec.ts`):** Upon approval, you must implement the test cases defined in the plan into actual executable Playwright test scripts.
+3. **Authentication Requirements (CRITICAL):** If the application requires login (e.g., a dashboard hidden behind auth), you must not guess the auth mechanisms. Instead, **YOU MUST STOP AND ASK THE USER** to provide valid test login credentials (username/password). Your Playwright scripts MUST include a mechanism to perform the actual UI login (e.g., navigating to `/login`, filling in the credentials, and submitting the form) before executing the main feature tests.
+4. **User Flow Focus:** Test complete user journeys (e.g., Select Date -> Click Filter -> Assert Report Table Updates). Do not test isolated UI styling (e.g., CSS colors).
+5. **Locators (Best Practices):** Prioritize user-facing attributes (`getByRole`, `getByText`, `getByLabel`, `getByTestId`).
+6. **API Mocking:** Intercept API responses (`page.route()`) during standard E2E UI testing to ensure reliability without a live backend connection.
+7. **Self-Check & Fix Loop (MANDATORY):** E2E testing is the Frontend agent's self-debugging mechanism. After writing the React components and Test scripts, you MUST run the Playwright tests via the Playwright MCP server. If they fail, YOU MUST go back into the React code to fix the bugs and re-run until the MCP returns a PASS result.
