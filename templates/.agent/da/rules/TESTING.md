@@ -2,9 +2,11 @@
 
 This document outlines the STRICT enforcement rules for Test-Driven Development (TDD) execution and Test Quality for ALL Backend development, regardless of the framework or language (e.g., Laravel, FastAPI, NestJS, Spring Boot).
 
+
+
 ## 1. The Core TDD Lifecycle & User Review Contract (HARD RULE)
 
-For each architectural layer (Controller → Service → Repository), you MUST follow this exact sequence:
+For HIGH IMPACT tasks on each architectural layer (Controller → Service → Repository), you MUST follow this exact sequence:
 
 1. **RED Phase (Write Tests First):** Define and write the failing tests before writing ANY production logic.
 2. **Execute & Prove:** Run the tests using the appropriate framework command (e.g., `pytest`, `phpunit`, `jest`) via `run_command` to verify they fail. Show the failure logs.
@@ -147,7 +149,7 @@ Before writing tests, you MUST think:
 
 Frontend UI development must strictly coordinate with Playwright E2E testing to ensure absolute reliability of user flows.
 
-1. **Document Before Code:** You MUST generate a UI Spec and an E2E Test Plan document (e.g., `05-e2e-test-plan.md`) outlining the critical scenarios beforehand, and **await user approval** before writing implementation code.
+1. **Document Before Code:** You MUST generate a UI Spec and an E2E Test Plan document (e.g., `05-test-plan.md`) outlining the critical scenarios beforehand, and **await user approval** before writing implementation code.
 2. **Translate to Scripts (`*.spec.ts`):** Upon approval, you must implement the test cases defined in the plan into actual executable Playwright test scripts.
 3. **Authentication Requirements (CRITICAL):** If the application requires login (e.g., a dashboard hidden behind auth), you must not guess the auth mechanisms. Instead, **YOU MUST STOP AND ASK THE USER** to provide valid test login credentials (username/password). Your Playwright scripts MUST include a mechanism to perform the actual UI login (e.g., navigating to `/login`, filling in the credentials, and submitting the form) before executing the main feature tests.
 4. **User Flow Focus:** Test complete user journeys (e.g., Select Date -> Click Filter -> Assert Report Table Updates). Do not test isolated UI styling (e.g., CSS colors).

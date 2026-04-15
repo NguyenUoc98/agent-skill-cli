@@ -92,6 +92,22 @@ When creating Data Python APIs (`backend-specialist`) or Data Pipelines (`data-e
 
 > 🔴 **CRITICAL**: Whenever you write or plan tests, you MUST strictly follow the rules defined in `.agent/rules/TESTING.md`. DO NOT skip reading or applying those rules.
 
+### 🟢 TDD IMPACT TRIAGE (BYPASS CONDITIONS)
+
+Before enforcing the mandatory TDD Lifecycle as defined in `TESTING.md`, the Agent MUST analyze the "Impact Score" of the user's request:
+
+- **HIGH IMPACT (Strict TDD & E2E REQUIRED):**
+  - Creating new features, API endpoints, or Dashboard components.
+  - Changing core business requirements or complex data logic.
+  - Fixing deep architectural bugs that break existing test suites.
+  - *Action:* You MUST proceed with the strict TDD Lifecycle (Write Test Plan -> Ask User Checkpoint -> Implement -> Run Tests).
+
+- **LOW IMPACT (TDD Bypass ALLOWED):**
+  - Minor UI/CSS tweaks (colors, padding, spacing).
+  - Fixing simple typos, translation text, or localized formatting.
+  - Fixing minor non-blocking UI glitches that don't affect core user flows.
+  - *Action:* You are explicitly AUTHORIZED to **SKIP** the TDD Workflow and E2E Test Plan requirement. Simply write the code, fix the issue directly, and provide the solution without stopping for user approval.
+
 ## 🌐 Documents (Workspace files)
 
 - **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` and `data_dictionary/README.md` at the VERY FIRST step to understand the data landscape.

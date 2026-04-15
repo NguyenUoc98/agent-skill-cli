@@ -114,6 +114,22 @@ Whenever the user calls an OpenSpec workflow (e.g. `/opsx:propose`, `/opsx:apply
 
 > 🔴 **CRITICAL**: Whenever you write or plan tests, you MUST strictly follow the rules defined in `.agent/dev/backend/rules/TESTING.md`. DO NOT skip reading or applying those rules.
 
+### 🟢 TDD IMPACT TRIAGE (BYPASS CONDITIONS)
+
+Before enforcing the mandatory TDD Lifecycle as defined in `TESTING.md`, the Agent MUST analyze the "Impact Score" of the user's request:
+
+- **HIGH IMPACT (Strict TDD REQUIRED):**
+  - Creating new features, API endpoints, or database structures.
+  - Changing core business requirements or algorithms.
+  - Fixing deep bugs that break existing logic or test suites.
+  - *Action:* You MUST proceed with the strict TDD Lifecycle (Write Test Plan -> Ask User Checkpoint -> Implement -> Run Tests).
+
+- **LOW IMPACT (TDD Bypass ALLOWED):**
+  - Minor code/variable formatting, simple refactoring without logic changes.
+  - Fixing simple typos, comments, or documentation files.
+  - Very isolated, non-functional parameter tuning.
+  - *Action:* You are explicitly AUTHORIZED to **SKIP** the TDD Workflow requirement. Simply write the code, fix the issue directly, and provide the solution without stopping for user approval.
+
 ## 🌐 Documents (Workspace files)
 
 - **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` and `data_dictionary/README.md` at the VERY FIRST step of the session to understand Agents, Skills, and the database topography.

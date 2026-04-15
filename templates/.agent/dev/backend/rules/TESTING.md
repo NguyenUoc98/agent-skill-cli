@@ -2,9 +2,11 @@
 
 This document outlines the STRICT enforcement rules for Test-Driven Development (TDD) execution and Test Quality for ALL Backend development, regardless of the framework or language (e.g., Laravel, FastAPI, NestJS, Spring Boot).
 
+
+
 ## 1. The Core TDD Lifecycle & User Review Contract (HARD RULE)
 
-For each architectural layer (Controller → Service → Repository), you MUST follow this exact sequence:
+For HIGH IMPACT tasks on each architectural layer (Controller → Service → Repository), you MUST follow this exact sequence:
 
 1. **RED Phase (Write Tests First):** Define and write the failing tests before writing ANY production logic.
 2. **Execute & Prove:** Run the tests using the appropriate framework command (e.g., `pytest`, `phpunit`, `jest`) via `run_command` to verify they fail. Show the failure logs.
