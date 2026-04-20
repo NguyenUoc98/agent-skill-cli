@@ -37,6 +37,7 @@ Agent activated (`backend-specialist`) → Check frontmatter "skills:" → Read 
 | **SIMPLE CODE**  | "fix", "add", "change" (single file)       | TIER 0 + TIER 1 (lite)         | Inline Edit                 |
 | **COMPLEX CODE** | "build", "create", "implement", "refactor" | TIER 0 + TIER 1 (full) + Agent | **{task-slug}.md Required** |
 | **DESIGN/UI**    | "design", "UI", "page", "dashboard"        | TIER 0 + TIER 1 + Agent        | **{task-slug}.md Required** |
+| **DICTIONARY**   | "/dict:add", "import table", "ddl"         | `/dict:add` Workflow           | Variable                    |
 | **SLASH CMD**    | /create, /orchestrate, /debug              | Command-specific flow          | Variable                    |
 
 ---
@@ -58,7 +59,7 @@ Agent activated (`backend-specialist`) → Check frontmatter "skills:" → Read 
 When applying the agent, inform the user:
 
 ```markdown
-🤖 **Áp dụng kiến thức của `@[backend-specialist]`...**
+🤖 **`@[backend-specialist]` đã tiếp nhận và xử lý...**
 
 [Continue with specialized response]
 ```
@@ -68,7 +69,7 @@ When applying the agent, inform the user:
 | Step | Check | If Unchecked |
 |------|-------|--------------|
 | 1 | Did I READ the `backend-specialist.md` file? | → STOP. Open `.agent/agents/backend-specialist.md` |
-| 2 | Did I announce `🤖 Áp dụng kiến thức của @[backend-specialist]...`? | → STOP. Add announcement before response. |
+| 2 | Did I announce `🤖 @[backend-specialist] đã tiếp nhận và xử lý...`? | → STOP. Add announcement before response. |
 | 3 | Did I load required skills from agent's frontmatter? | → STOP. Check `skills:` field and read them. |
 | 4 | Did I read `AGENTS.md` to understand project rules? | → STOP. Run `view_file` on `AGENTS.md` before coding. |
 | 5 | Did I use Context7 MCP tools for library documentation? | → STOP. Call `resolve-library-id` and `query-docs` before guessing APIs. |
@@ -87,6 +88,7 @@ Whenever the user calls an OpenSpec workflow (e.g. `/opsx:propose`, `/opsx:apply
 
 **Phase 1: Establish the Spec (`/opsx:propose`)**
 - You must ensure the required artifacts are generated/updated: `proposal.md`, `specs/`, `design.md`, and `tasks.md`.
+- **Database Schema & Folder Structure (MANDATORY)**: In `design.md` (or the relevant spec file), you MUST explicitly outline the proposed **Database Schema** (detailing tables, fields, constraints, and the *exact data types* for every column) and the **Expected Folder Structure** (showing where controllers, services, repositories, models, etc. will reside).
 - **API Contract Mocking (MANDATORY)**: If the original requirements (from Jira/BA) do not explicitly define the data types or JSON payload structures, you MUST generate a `[feature]-mock.json` file. This file acts as the proposed API contract (Request/Response shapes) ensuring data types are correct for the Frontend, and must be reviewed by the PIC.
 - **TDD Task Breakdown**: The generated `tasks.md` MUST explicitly break down features by layer using the **Top-Down (Outside-In)** approach. You MUST ALWAYS start with the **Controller layer** (the API Contract), before moving to the **Service layer**, and finally the **Repository layer**. For EACH layer, you must list exactly these steps:
   1. `[ ] Write failing test (RED) for <Layer>`
@@ -108,195 +110,42 @@ Whenever the user calls an OpenSpec workflow (e.g. `/opsx:propose`, `/opsx:apply
 
 ## 🔴 TDD ENFORCEMENT & TEST QUALITY (CRITICAL)
 
-### 1. Strict TDD Execution (NO EXCEPTIONS)
+**MANDATORY READ**: The detailed testing rules, TDD workflows, test scoping boundaries, and mocking principles for Backend Development have been moved to a dedicated rule file to maintain clean architecture.
 
-For every implementation:
+> 🔴 **CRITICAL**: Whenever you write or plan tests, you MUST strictly follow the rules defined in `.agent/dev/backend/rules/TESTING.md`. DO NOT skip reading or applying those rules.
 
-- You MUST write tests BEFORE writing any production code
-- Each test MUST fail first (RED phase)
-- Only write the MINIMUM code required to pass (GREEN phase)
-- Refactor only after tests pass
+### 🟢 TDD IMPACT TRIAGE (BYPASS CONDITIONS)
 
-Forbidden:
-- Writing production code before tests
-- Writing multiple tests at once without execution
-- Skipping the RED phase
+Before enforcing the mandatory TDD Lifecycle as defined in `TESTING.md`, the Agent MUST analyze the "Impact Score" of the user's request:
 
----
+- **HIGH IMPACT (Strict TDD REQUIRED):**
+  - Creating new features, API endpoints, or database structures.
+  - Changing core business requirements or algorithms.
+  - Fixing deep bugs that break existing logic or test suites.
+  - *Action:* You MUST proceed with the strict TDD Lifecycle (Write Test Plan -> Ask User Checkpoint -> Implement -> Run Tests).
 
-### 2. Test Case Planning (MANDATORY BEFORE TEST CODE)
-
-Before writing any test code, you MUST:
-
-1. List all test cases in plain text
-2. Cover ALL scenarios:
-   - Happy path
-   - Edge cases
-   - Failure cases
-
-You MUST NOT proceed to writing test code until test cases are clearly defined.
-
----
-
-### 3. Edge Case & Boundary Coverage (MANDATORY)
-
-Every feature MUST include tests for:
-
-- null inputs
-- empty values
-- invalid formats
-- boundary values (min/max)
-- unexpected inputs
-
-Agent MUST actively attempt to break the logic.
-
----
-
-### 4. Branch Coverage (MANDATORY)
-
-You MUST cover ALL logical branches:
-
-- if / else conditions
-- switch cases
-- exception paths
-
-Example:
-if ($user && $user->isActive())
-
-Required tests:
-- user = null
-- user inactive
-- user active
-
----
-
-### 5. Test Design Principles
-
-Tests MUST:
-
-- Validate behavior (NOT implementation details)
-- Be deterministic and isolated
-- Have clear, meaningful assertions
-
-Avoid:
-- Testing private/internal methods
-- Trivial assertions (e.g. assertTrue(true))
-- Asserting mocked behavior instead of real outcomes
-
----
-
-### 6. Mocking Rules (STRICT)
-
-- All external dependencies MUST be mocked:
-  - Database
-  - API calls
-  - Third-party services
-
-- Unit tests MUST focus ONLY on business logic
-
-Forbidden:
-- Real database access in unit tests
-- Real external API calls
-
----
-
-### 7. Assertion Quality (MANDATORY)
-
-Assertions MUST:
-
-- Validate real outputs or side effects
-- Be specific and meaningful
-
-Forbidden:
-- Weak or generic assertions
-- Over-reliance on mocks without validating results
-
----
-
-### 8. Self-Validation Step (MANDATORY)
-
-After writing tests, you MUST verify:
-
-- Do tests FAIL if logic is incorrect?
-- Are ALL branches covered?
-- Are edge cases included?
-- Are assertions meaningful?
-
-If any answer is NO → you MUST improve tests before continuing.
-
----
-
-### 9. Coverage Requirement
-
-- Target coverage: >= 90%
-- MUST include:
-  - Branch coverage
-  - Edge case coverage
-
-High coverage with low-quality tests is NOT acceptable.
-
----
-
-### 10. Layer Testing Strategy (Laravel)
-
-- Controller: test API contract only
-- Service: PRIMARY unit test target
-- Repository: MUST be mocked
-
-Testing priority:
-Service Layer > Controller > Repository
-
----
-
-### 11. TDD Execution Contract (HARD RULE)
-
-During `/opsx:apply`:
-
-For EACH layer (Controller → Service → Repository):
-
-1. Write failing test (RED)
-2. STOP and request approval
-3. Only after approval → implement (GREEN)
-4. Refactor
-
-You are FORBIDDEN from skipping approval checkpoints.
-
----
-
-### 12. Anti-Patterns (STRICTLY FORBIDDEN)
-
-- Writing implementation before tests
-- Skipping edge cases
-- Writing large, unfocused tests
-- Using real DB in unit tests
-- Ignoring failing tests
-- Writing tests AFTER implementation
-
----
-
-### 13. Agent Thinking Model (MANDATORY)
-
-Before writing tests, you MUST think:
-
-- What can break this logic?
-- What inputs are invalid?
-- What edge cases exist?
-- What branches are untested?
-
-If you cannot answer → DO NOT write code yet.
+- **LOW IMPACT (TDD Bypass ALLOWED):**
+  - Minor code/variable formatting, simple refactoring without logic changes.
+  - Fixing simple typos, comments, or documentation files.
+  - Very isolated, non-functional parameter tuning.
+  - *Action:* You are explicitly AUTHORIZED to **SKIP** the TDD Workflow requirement. Simply write the code, fix the issue directly, and provide the solution without stopping for user approval.
 
 ## 🌐 Documents (Workspace files)
 
-- **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` at the VERY FIRST step of the session to understand Agents and Skills.
+- **System Context**: You MUST call `view_file` to read `.agent/ARCHITECTURE.md` and `data_dictionary/README.md` at the VERY FIRST step of the session to understand Agents, Skills, and the database topography.
 - **Project Instructions**: You MUST call `view_file` to read `AGENTS.md` (located in the project root) at the VERY FIRST step of the session to understand the project architecture, project guidelines, and coding conventions. If it's missing, you MUST request the user to create it.
 - **Documentation**: If `openspec/` exists, you MUST read relevant module docs before making architecture decisions.
 - **Libraries**: You MUST use the **Context7 MCP Server** (`resolve-library-id` followed by `query-docs`) to look up documentation and code examples BEFORE writing code that uses any external library or framework. DO NOT guess the syntax.
+
+## 🛑 MARTIAL LAW: NO ASSUMPTIONS (ASK BEFORE DECIDING - HARD RULE)
+
+- **Handling Ambiguity:** If a user request lacks details, business logic clarity, or if you are unsure about the behavior of a function, you MUST STOP and list questions to clarify the requirements. Do not proceed until clarified.
+- **Critical Decisions:** For critical tasks (e.g., DB schema design, determining architecture, or preparing Mock Data for Integration Tests), you MUST NEVER make decisions independently. You must present your proposed plan and EXPLICITLY REQUEST USER CONFIRMATION before writing any execution code.
 
 ## 🌐 Language & Communication
 
 - **Always respond in Vietnamese.**
 - **Code comments/variables** remain in English.
-- **ALWAYS ACTIVE**: When there are unclear issues or multiple options, please confirm with the person in charge/user for clarification. Do not make decisions independently.
 
 ## 🗺️ System Map Read
 
