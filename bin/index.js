@@ -123,11 +123,37 @@ async function runSetup(role, currentDir, templateDir, targetDir) {
                         console.log(`${colors.pipe} ${colors.cyan}data_dictionary/${colors.reset} already exists in project root, skipping to prevent overwrites`);
                     }
                 }
+
+                // Copy playwright.config.md to project root for DA role
+                const playwrightConfigSrc = path.join(__dirname, '..', 'templates', 'playwright.config.md');
+                const playwrightConfigDest = path.join(currentDir, 'playwright.config.md');
+                if (fs.existsSync(playwrightConfigSrc)) {
+                    if (!fs.existsSync(playwrightConfigDest)) {
+                        fs.copyFileSync(playwrightConfigSrc, playwrightConfigDest);
+                        console.log(`${colors.pipe} Installed ${colors.cyan}playwright.config.md${colors.reset} to project root`);
+                    } else {
+                        console.log(`${colors.pipe} ${colors.cyan}playwright.config.md${colors.reset} already exists in project root, skipping`);
+                    }
+                }
+            }
+
+            // Copy test-registry to project root for Tester role
+            if (r === 'tester') {
+                const testRegistrySrc = path.join(__dirname, '..', 'templates', 'test-registry');
+                const testRegistryDest = path.join(currentDir, 'test-registry');
+                if (fs.existsSync(testRegistrySrc)) {
+                    if (!fs.existsSync(testRegistryDest)) {
+                        fs.cpSync(testRegistrySrc, testRegistryDest, { recursive: true, force: true });
+                        console.log(`${colors.pipe} Installed ${colors.cyan}test-registry/${colors.reset} to project root`);
+                    } else {
+                        console.log(`${colors.pipe} ${colors.cyan}test-registry/${colors.reset} already exists in project root, skipping to prevent overwrites`);
+                    }
+                }
             }
         });
 
-        // 4. Setup OpenSpec for Dev Roles
-        if (role === 'frontend' || role === 'backend') {
+        // 4. Setup OpenSpec for Dev Roles and Tester Role
+        if (role === 'frontend' || role === 'backend' || role === 'tester') {
             try {
                 console.log(`${colors.pipe} Checking if OpenSpec is installed...`);
                 let isInstalled = false;

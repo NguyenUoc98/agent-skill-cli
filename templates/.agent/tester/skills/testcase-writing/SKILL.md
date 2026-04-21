@@ -1,78 +1,98 @@
 ---
 name: testcase-writing
-description: QA Skills for Effective Test Case Design in Antigravity (ISTQB-Aligned), covering requirement analysis, test design techniques, and test oracles.
+description: QA Skills for Effective Test Case Design — ISTQB Techniques + 2-2-1 Coverage Rule, optimized for Playwright MCP execution.
 origin: QA
 ---
 
 # Test Case Writing
 
-This skill describes the knowledge areas and practices required for a QA engineer to design effective and efficient test cases according to ISTQB practices within Antigravity.
+This skill describes the knowledge areas and practices required to design effective, efficient, and executable test cases — combining ISTQB design techniques with the mandatory 2-2-1 coverage baseline.
 
 ## When to Use
 
-- When writing new test cases for product features or requirements.
+- When breaking down Acceptance Criteria (AC) into actionable Test Scenarios.
 - When reviewing or updating existing test cases.
 - When formulating testing strategies for complex functionalities and state transitions.
-- When performing risk-based testing or prioritizing test efforts.
+- Before beginning active test execution via Playwright MCP.
 
 ## How It Works
 
-Effective test case design relies on a structured approach aligned with ISTQB principles. The core process integrates multiple analytical and design skills:
+### 1. Test Design Techniques (ISTQB)
 
-### 1. Requirement Analysis
-A tester must be able to understand business requirements and acceptance criteria, identify implicit and explicit rules, and extract **test conditions** from the test basis. This ensures no critical behavior is left untested.
+Apply the appropriate technique based on the nature of the feature under test:
 
-### 2. Application of Test Design Techniques
-A competent tester must know when and how to apply:
-- **Equivalence Partitioning**
-- **Boundary Value Analysis**
-- **Decision Table Testing**
-- **State Transition Testing**
+| Technique | When to Apply |
+|---|---|
+| **Equivalence Partitioning (EP)** | Input fields with large value ranges — group valid/invalid partitions, test one representative per group. |
+| **Boundary Value Analysis (BVA)** | Numeric fields, string length, date ranges — test at `min`, `min+1`, `max-1`, `max`. |
+| **Decision Table Testing** | Multi-condition business logic (e.g., promotions, role-based access) — enumerate all condition combos. |
+| **State Transition Testing** | Workflow entities with lifecycle states (e.g., `pending → confirmed → shipped`) — cover valid and invalid transitions. |
+| **Use Case / Scenario Testing** | End-to-end user journeys derived from Acceptance Criteria. |
 
-Using these techniques helps reduce redundant test cases while maintaining coverage.
+> **NOTE:** For any given feature, identify *which* techniques apply first before writing cases. A form with numeric inputs needs BVA. A checkout flow needs State Transition. A permissions matrix needs a Decision Table.
 
-### 3. Risk Analysis and Prioritization
-Identify components with high failure probability and evaluate the business impact of failures. This enables effective **risk-based testing** and optimal test effort allocation.
+---
 
-### 4. Analytical and Logical Thinking
-Decompose complex requirements into smaller, testable conditions. Identify hidden constraints and dependencies between fields or actions.
+### 2. The 2-2-1 Baseline Rule (Mandatory Minimum)
 
-### 5. Negative Testing Mindset
+Regardless of which technique(s) you apply, every Acceptance Criteria block MUST produce at minimum:
+
+- **2 Positive Scenarios**: Happy-path success flows (e.g., valid inputs → `200 OK`, successful login).
+- **2 Negative Scenarios**: Input validation errors, unauthorized access, malformed requests (`400`, `401`, `403`).
+- **1 Edge Case**: Boundary limits, XSS/SQL injection strings, extreme payloads, timeout behavior.
+
+> **WARNING:** This is the quality gate minimum. Complex features will require more cases using the techniques above.
+
+---
+
+### 3. Negative Testing Mindset
+
 Actively attempt to break the system by:
-- Providing invalid or malformed inputs
-- Executing actions in an incorrect order
-- Attempting unauthorized operations
+- Providing invalid or malformed inputs (empty, null, oversized, wrong type).
+- Executing actions in an incorrect or reverse order.
+- Attempting unauthorized or out-of-role operations.
 
-This approach increases defect detection effectiveness.
+---
 
-### 6. Data Domain Knowledge
-Understand valid data formats and ranges, data boundaries and constraints, and data persistence and transformation across system layers. This supports effective boundary and partition-based testing.
+### 4. Output Format (Playwright-Ready)
 
-### 7. State and Workflow Modeling
-For systems with workflows or lifecycle states, testers must:
-- Identify all system states
-- Map allowed and forbidden transitions
-- Design tests that cover these transitions
+All generated cases must be structured in a **SUMMARY TABLE** (stored locally as Markdown or `.csv`).
 
-### 8. Defining Clear Test Oracles
-Define precise expected results that allow objective determination of Pass or Fail. Without clear test oracles, test execution becomes subjective and unreliable.
+Required columns:
+- `Test_ID`
+- `Type` (Positive / Negative / Edge)
+- `Technique` (EP / BVA / Decision Table / State Transition / etc.)
+- `Scenario_Title`
+- `Pre_conditions`
+- `Steps` *(specific and Playwright-executable — see below)*
+- `Expected_Result` *(clear, observable assertion)*
 
-### 9. Maintaining Traceability and Documentation
-Ensure test cases are linked to requirements, updated when requirements change, and historical changes are trackable. This supports auditability and regression testing.
+#### Writing Playwright-Executable Steps
 
-### 10. Communication and Collaboration
-Ask clarification questions when requirements are ambiguous, communicate defects clearly with reproducible steps, and collaborate with developers, product owners, and designers to refine requirements.
+Because tests will be run via **Playwright MCP**, steps must be concrete and actionable:
 
-### 11. Continuous Learning and Improvement
-Continuously improve skills in new testing techniques, domain knowledge, and automation tools/practices to ensure long-term test effectiveness and quality growth.
+- ❌ **Too vague**: "Login to the system."
+- ✅ **Playwright-ready**: "Navigate to `/login`. Fill `#email` with `user@test.com`. Fill `#password` with `secret123`. Click `button[type=submit]`. Wait for URL to become `/dashboard`."
 
-## Examples
+Assertions must also be tangible:
+- ❌ **Bad oracle**: "User should see an error."
+- ✅ **Good oracle**: "Element `.error-message` is visible and contains text `Password must be at least 8 characters`."
 
-### Test Design Technique Example (Boundary Value Analysis)
-When testing an input field that accepts ages from 18 to 65:
-- **Valid values:** 18, 19, 64, 65
-- **Invalid values:** 17, 66
+#### State Isolation
 
-### Clear Test Oracle Example
-- **Bad:** User should see an error message.
-- **Good:** The system displays the error message "Password must be at least 8 characters long" in red text below the password field, and the "Submit" button remains disabled.
+Each test case must be fully independent. Assume browser context or application state may reset between scenarios. Define `Pre_conditions` explicitly (e.g., "User is logged in as role `admin`", "Cart has 3 items").
+
+---
+
+### 5. Traceability
+
+Every test case must be traceable back to its source requirement or Acceptance Criteria. Use `Test_ID` to link:
+```
+AC-01 → TC-001, TC-002, TC-003, TC-004, TC-005
+```
+
+---
+
+### 6. Review & Handoff
+
+Once the Testcase table is fully populated, it is handed back to the `test-planning` orchestrator for QA PIC review before Playwright execution begins.

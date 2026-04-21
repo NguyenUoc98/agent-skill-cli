@@ -57,14 +57,34 @@ Modular knowledge domains dynamically loaded by the active agents inside `.agent
 | `shadcn` & `tailwind-*` | Clean, accessible UI components and data grid designs |
 | `frontend-design` & `web-design-guidelines` | Architectural UX guidelines tailored for reporting and analytics |
 
+### Testing
+| Skill | Description |
+|-------|-------------|
+| `python-testing-patterns` | TDD implementation tests for Python/FastAPI workflows |
+| `tdd-*` | Core TDD components (`orchestrator`, `cycle`, `red`, `green`, `refactor`) |
+| `da-testing-strategy` | 3-layer testing pyramid: Unit/Feature → Integration → E2E |
+| `playwright-e2e` | Dashboard E2E execution via Playwright MCP: config, test patterns, self-fix loop |
+
 ---
 
 ## 🔄 Workflows
 
 Slash command procedures. Invoke with `/command`.
 
-| Command           | Description                                      | Location                                   |
-| ----------------- | ------------------------------------------------ | ------------------------------------------ |
-| `/dict:add`       | Import table to Dictionary                       | `.agent/workflows/dict_add.md`             |
-| `/report_builder` | End-to-end report build (multi-agent, phased)    | `.agent/workflows/report_builder.md`       |
-| `/brainstorm`     | Socratic discovery & design                      | `.agent/workflows/brainstorm.md`           |
+| Command | Description | Location |
+| --- | --- | --- |
+| `/dict:add` | Import table to Dictionary | `.agent/workflows/dict_add.md` |
+| `/report_builder` | End-to-end report build (multi-agent, phased) — now includes 3-layer testing pyramid | `.agent/workflows/report_builder.md` |
+| `/brainstorm` | Socratic discovery & design | `.agent/workflows/brainstorm.md` |
+
+### `/report_builder` Phase Map
+
+| Phase | Agent | Output |
+|---|---|---|
+| 0 | project-planner | `blueprint/[slug]/00-plan.md` |
+| 1 | data-analyst | `blueprint/[slug]/01-metrics.md` |
+| 2 | data-engineer + optimizer | `blueprint/[slug]/02-data-layer.md` — SQL + indexes |
+| 3 | backend-specialist | `blueprint/[slug]/03-api-contract.md` — FastAPI + **Unit/Feature TDD** |
+| 3.5 | backend-specialist | `blueprint/[slug]/06-integration-tests.md` — **Integration Tests** |
+| 4 | frontend-specialist | `blueprint/[slug]/04-ui-spec.md` + `05-test-plan.md` — UI + E2E plan |
+| 5 | frontend-specialist | `blueprint/[slug]/05-e2e-results.md` — **Playwright MCP E2E** |

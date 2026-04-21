@@ -55,10 +55,16 @@ Nếu bạn có tài liệu **không có cấu trúc rõ ràng** (PowerBI export
 [Phase 2] 🤖 @data-engineer + @database-optimizer — SQL & Data Layer
         │ ⛔ CHECKPOINT: User xác nhận SQL
         ▼
-[Phase 3] 🤖 @backend-specialist — FastAPI Development
-        │ ⛔ CHECKPOINT: User xác nhận API contract
+[Phase 3] 🤖 @backend-specialist — FastAPI + Unit/Feature Tests (TDD)
+        │ ⛔ CHECKPOINT: User xác nhận API contract + unit tests GREEN
         ▼
-[Phase 4] 🤖 @frontend-specialist — Dashboard UI
+[Phase 3.5] 🤖 @backend-specialist — Integration Tests
+        │ ⛔ CHECKPOINT: User xác nhận integration test cases
+        ▼
+[Phase 4] 🤖 @frontend-specialist — Dashboard UI + Component Tests
+        │ ⛔ CHECKPOINT: User xác nhận UI + test plan E2E
+        ▼
+[Phase 5] 🤖 @frontend-specialist — E2E Tests (Playwright MCP)
         │
         ▼
 [Done] 📋 Synthesis Report
@@ -197,13 +203,42 @@ Nếu bạn có tài liệu **không có cấu trúc rõ ràng** (PowerBI export
 4. **Define Pydantic models**:
    - `QueryRequest` (input filters with validation)
    - `ChartDataResponse` (output format for frontend charts)
-5. **Write FastAPI code + tests** (TDD: tests first)
+5. **Write FastAPI code + tests (TDD — Layer 1)** — Apply `da-testing-strategy` skill Layer 1 pattern:
+   - Write failing tests first (`tests/unit/`, `tests/feature/`) — **RED phase**
+   - Write minimum implementation to pass — **GREEN phase**
+   - Refactor — **REFACTOR phase**
+   - Both `pytest tests/unit/` and `pytest tests/feature/` must exit GREEN before continuing.
 6. **Create `03-api-contract.md`** — Use `write_to_file` to create `blueprint/[report-slug]/03-api-contract.md` detailing Endpoints, Request Schemas (e.g. QueryRequest), and Response Schemas (e.g. ChartDataResponse).
 
 **⛔ CHECKPOINT:**
-> "API contract trên có đúng không? Gõ **'yes'** để tiến hành Phase 4 (Dashboard UI)."
+> "API contract và unit/feature tests đã GREEN chưa? Gõ **'yes'** để tiến hành Phase 3.5 (Integration Tests)."
 
-**→ DO NOT proceed to Phase 4 until user confirms.**
+**→ DO NOT proceed to Phase 3.5 until user confirms.**
+
+---
+
+## Phase 3.5: 🤖 @backend-specialist — Integration Tests
+
+🤖 **`@backend-specialist` đang thực thi integration test suite...**
+
+**Input:** Live DEV API (Phase 3 deployed), `playwright.config.md` (for BASE_URL)
+
+### Steps
+
+1. **Read Config** — `view_file` → `playwright.config.md` to get `BASE_URL`.
+2. **Read API Contract** — `view_file` → `blueprint/[report-slug]/03-api-contract.md`.
+3. **Generate Integration Test Case Suite** — For EACH endpoint, create test cases following the Layer 2 pattern in `da-testing-strategy` skill:
+   - Happy path (valid params, expect 200 + correct data shape)
+   - Invalid params (expect 422 validation error)
+   - Edge case (empty result, extreme date range)
+4. **Write `06-integration-tests.md`** — Use `write_to_file` to save all test cases to `blueprint/[report-slug]/06-integration-tests.md`.
+5. **Execute test cases** — Run `pytest` integration tests against DEV environment (`BASE_URL`). Record PASS/FAIL for each IT-xx case.
+6. **Fix failures** — If any IT-xx FAILS, fix the relevant service/repository code and re-run until all PASS.
+
+**⛔ CHECKPOINT:**
+> "Integration test suite đã hoàn thành. Tất cả IT-xx cases đều PASS. Gõ **'yes'** để tiến hành Phase 4 (Dashboard UI)."
+
+**→ DO NOT proceed to Phase 4 until all integration tests PASS.**
 
 ---
 
@@ -225,18 +260,69 @@ Nếu bạn có tài liệu **không có cấu trúc rõ ràng** (PowerBI export
 4. **Responsive layout** — Desktop-first, mobile-aware.
 5. **Performance** — Use `useMemo` for heavy data transformations.
 6. **Create `04-ui-spec.md`** — Use `write_to_file` to create `blueprint/[report-slug]/04-ui-spec.md` listing the components designed and the files created.
-7. **Create E2E Test Plan** — Define Playwright user flow tests targeting `data-testid` and roles. Use `write_to_file` to create/append to `blueprint/[report-slug]/05-test-plan.md` detailing the test cases.
+7. **Create E2E Test Plan** — Using the integration test cases in `06-integration-tests.md`, generate corresponding E2E scenarios (one E2E scenario per IT-xx case). Apply `da-testing-strategy` skill Layer 3 mapping. Save to `blueprint/[report-slug]/05-test-plan.md`.
+
+   Test plan must cover AT MINIMUM:
+   - ✅ Page loads with correct title and all chart containers visible
+   - ✅ Default date range loads data (happy path matching IT-01)
+   - ✅ Filter change triggers data refresh
+   - ❌ Invalid date range shows error state (matching IT-02)
+   - 🔲 Edge: empty result date range shows empty state (matching IT-03)
 
 **⛔ CHECKPOINT:**
-> "Bản thiết kế giao diện Dashboard UI (components, layout, filter) kèm kịch bản test Playwright E2E này đã đáp ứng đầy đủ yêu cầu chưa? Gõ **'yes'** để tôi tiến hành Code (Implement) và Kiểm thử tự động (E2E)."
+> "Dashboard UI và E2E test plan đã sẵn sàng. Gõ **'yes'** để tôi implement code và chuyển sang Phase 5 (E2E Execution)."
 
-**→ DO NOT proceed to implement code until user confirms.**
+**→ DO NOT proceed to Phase 5 until user confirms.**
 
-8. **Implement Code & Playwright Tests** — Write the React components and the Playwright test scripts.
-9. **Self-Check & Fix (Mandatory)** — Using the Playwright MCP server or local terminal, the Agent MUST execute the E2E tests. If the tests FAIL, the Agent must analyze the Playwright error logs, edit the React TSX files to fix the UI bugs, and re-run until GREEN.
+8. **Implement Code** — Write the React/Next.js components. Add `data-testid` attributes to ALL key UI elements.
+
+---
+
+## Phase 5: 🤖 @frontend-specialist — E2E Tests (Playwright MCP)
+
+🤖 **`@frontend-specialist` đang thực thi E2E test suite...**
+
+**Input:** `blueprint/[report-slug]/05-test-plan.md`, `playwright.config.md`
+
+### Steps
+
+1. **Read Config** — `view_file` → `playwright.config.md`. Extract BASE_URL, browser settings, auth credentials (if needed), and dashboard route for this report slug.
+2. **Authenticate (if required)** — Navigate to `login_url`, fill credentials from config, verify login succeeds.
+3. **Execute each E2E scenario** via Playwright MCP:
+   ```
+   For each scenario in 05-test-plan.md:
+     a. open_browser_url → BASE_URL + dashboard_route
+     b. browser_fill / browser_click / browser_select_option → interact
+     c. browser_wait_for → wait for data/error to appear
+     d. browser_snapshot → verify expected elements present
+     e. browser_take_screenshot → save evidence
+     f. Record PASS/FAIL
+   ```
+4. **Self-Fix Loop** — If any scenario FAILS:
+   - Analyze error / screenshot to identify root cause
+   - Edit the React TSX component to fix the bug
+   - Re-run only the failing scenario
+   - Repeat until ALL scenarios are GREEN ✅
+5. **Write Results** — Save `blueprint/[report-slug]/05-e2e-results.md` with pass/fail table + screenshot paths.
 
 ---
 
 ## 📋 Final Synthesis Report
 
-After Phase 4 is green, present a final synthesis summary to the user outlining the completed phases (1-4), files generated (APIs, UI, Tests), and next steps.
+After Phase 5 is fully GREEN, present a final synthesis to the user:
+
+| Phase | Agent | Deliverable |
+|---|---|---------|
+| 0 | project-planner | `blueprint/[slug]/00-plan.md` |
+| 1 | data-analyst | `blueprint/[slug]/01-metrics.md` |
+| 2 | data-engineer + optimizer | `blueprint/[slug]/02-data-layer.md` |
+| 3 | backend-specialist | `blueprint/[slug]/03-api-contract.md` + unit/feature tests GREEN |
+| 3.5 | backend-specialist | `blueprint/[slug]/06-integration-tests.md` — all IT-xx PASS |
+| 4 | frontend-specialist | `blueprint/[slug]/04-ui-spec.md` + `05-test-plan.md` |
+| 5 | frontend-specialist | `blueprint/[slug]/05-e2e-results.md` — all E2E GREEN ✅ |
+
+**Test Pyramid Summary:**
+- Layer 1 (Unit/Feature): N tests — all GREEN ✅
+- Layer 2 (Integration): N IT-xx cases — all PASS ✅
+- Layer 3 (E2E): N scenarios — all GREEN ✅
+
